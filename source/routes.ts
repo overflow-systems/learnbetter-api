@@ -10,4 +10,6 @@ routes.get('/mentorias', MentoriaController.buscarMentorias);
 
 routes.post('/mentorado/criar', MentoradoController.criarMentorado);
 
+routes.put('/mentorado/editar', MentoradoController.editarMentorado);
+
 export default routes;

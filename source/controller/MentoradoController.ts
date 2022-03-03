@@ -1,5 +1,5 @@
-import connection from '../database/connection';
 import Mentorado from '../models/Mentorado';
+import connection from '../database/connection';
 
 class MentoradoController {
 	criarMentorado(request, response) {
@@ -20,6 +20,28 @@ class MentoradoController {
 			if (error) throw error;
 
 			return response.json(JSON.stringify(result.insertId));
+		});
+	}
+
+	editarMentorado(request, response) {
+		const { id } = request.headers;
+
+		console.log(id);
+
+		const mentorado: Mentorado = {
+			nome: request.body.nome,
+			sobrenome: request.body.sobrenome,
+			data_nascimento: request.body.data_nascimento,
+			email: request.body.email,
+			celular: request.body.celular,
+			genero: request.body.genero,
+			data_ultima_atualizacao: new Date(),
+		};
+
+		connection.query('UPDATE mentorados SET ? WHERE id = ?', [mentorado, id], function (error, result, fields) {
+			if (error) throw error;
+
+			return response.json(JSON.stringify(id));
 		});
 	}
 }

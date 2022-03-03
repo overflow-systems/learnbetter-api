@@ -6,6 +6,8 @@ export default interface Mentorado {
 	data_nascimento: string;
 	email: string;
 	celular: string;
-	senha: string;
+	senha?: string;
 	genero: GeneroEnum;
+	data_criacao?: Date;
+	data_ultima_atualizacao?: Date;
 }
