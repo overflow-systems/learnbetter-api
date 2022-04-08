@@ -1,15 +1,15 @@
 import express from 'express';
 
 import MentoriaController from './controller/MentoriaController';
-import MentoradoController from './controller/MentoradoController';
+import UsuarioController from './controller/UsuarioController';
 
 const routes = express.Router();
 
-routes.get('/mentorias/quantidades', MentoriaController.buscarQuantidade);
 routes.get('/mentorias', MentoriaController.buscarMentorias);
+routes.get('/mentorias/quantidades', MentoriaController.buscarQuantidade);
 
-routes.post('/mentorado/criar', MentoradoController.criarMentorado);
-
-routes.put('/mentorado/editar', MentoradoController.editarMentorado);
+routes.get('/usuario/buscar', UsuarioController.buscarUsuario);
+routes.post('/usuario/criar', UsuarioController.criarUsuario);
+routes.put('/usuario/editar', UsuarioController.editarUsuario);
 
 export default routes;

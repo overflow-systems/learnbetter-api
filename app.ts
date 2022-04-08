@@ -1,7 +1,9 @@
 import express from 'express';
-import dotenv from 'dotenv';
-dotenv.config();
 import routes from './source/routes';
+
+import path from 'path';
+
+console.log(__dirname);
 
 const app = express();
 

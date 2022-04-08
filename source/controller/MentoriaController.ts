@@ -1,4 +1,4 @@
-import { StatusMentoriaEnum } from '../utils/StatusMentoriaEnum';
+import { StatusMentoriaEnum } from '../enum/StatusMentoriaEnum';
 
 import connection from '../database/connection';
 
@@ -13,7 +13,7 @@ class MentoriaController {
 		const query = `SELECT count(mentorias.id) quantidade
 									 FROM mentorias
 									 INNER JOIN mentorados ON mentorados.id = mentorias.id_mentorado
-									 WHERE status = ${enumValue}`;
+									 WHERE status = ${enumValue}`; // falta id do mentor
 
 		connection.query(query, function (error, results, fields) {
 			if (error) throw error;
@@ -25,13 +25,13 @@ class MentoriaController {
 	buscarMentorias(request, response) {
 		const { status } = request.query;
 
-		const enumValue = status ? StatusMentoriaEnum[status.toUpperCase()] : StatusMentoriaEnum.ANDAMENTO;
+		const enumValue = status ? StatusMentoriaEnum[status.toUpperCase()] : StatusMentoriaEnum.ANDAMENTO;	
 
 		const query = `SELECT mentores.nome, mentores.sobrenome, mentorias.data_inicio
 									 FROM mentorias
 									 INNER JOIN mentorados ON mentorados.id = mentorias.id_mentorado
-									 INNER JOIN mentores ON mentores.id = mentorias.id_mentor
-									 WHERE status = ${enumValue}`;
+									 INNER JOIN mentores ON mentores.id = mentorias.id_mentor 
+									 WHERE status = ${status}`; // falta id do mentor
 
 		const tagsQuery = `SELECT tags.nome
 											 FROM tags
