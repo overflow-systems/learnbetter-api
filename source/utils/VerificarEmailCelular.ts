@@ -7,11 +7,11 @@ export default async function VerificarEmailCelular(tipo: string, celular: strin
 
 	if (tipo === 'mentorado') tabela = 'mentorados';
 	else if (tipo === 'mentor') tabela = 'mentores';
-	else return { status: 400, message: 'Tipo de usuário inválido' };
+	else return { status: 400, mensagem: 'Tipo de usuário inválido' };
 
-	if (await knex.select('celular').from(tabela).where('celular', celular).first()) return { status: 400, message: 'Celular já utilizado' };
+	if (await knex.select('celular').from(tabela).where('celular', celular).first()) return { status: 400, mensagem: 'Celular já utilizado' };
 
-	if (await knex.select('email').from(tabela).where('email', email).first()) return { status: 400, message: 'E-mail já utilizado' };
+	if (await knex.select('email').from(tabela).where('email', email).first()) return { status: 400, mensagem: 'E-mail já utilizado' };
 
-	return { status: 200, message: 'OK' };
+	return { status: 200, mensagem: 'OK' };
 }

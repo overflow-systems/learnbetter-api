@@ -65,7 +65,7 @@ class MentoradoController {
 			});
 		}
 
-		return response.json({ status: 400, message: 'Erro inesperado' });
+		return response.json({ status: 400, mensagem: 'Erro inesperado' });
 	}
 
 	editarUsuario(request, response) {
@@ -114,7 +114,7 @@ class MentoradoController {
 			});
 		}
 
-		return response.json({ status: 400, message: 'Erro inesperado' });
+		return response.json({ status: 400, mensagem: 'Erro inesperado' });
 	}
 
 	async login(request, response) {
@@ -129,14 +129,14 @@ class MentoradoController {
 
 		if (tipo === 'mentorado') tabela = 'mentorados';
 		else if (tipo === 'mentor') tabela = 'mentores';
-		else return { status: 400, message: 'Tipo de usuário inválido' };
+		else return { status: 400, mensagem: 'Tipo de usuário inválido' };
 
 		const { senha } = await knex.select('senha').from(tabela).where('email', usuario.email).first();
 
 		const bcrypt = require('bcryptjs');
 
-		if (bcrypt.compareSync(usuario.senha, senha)) return response.json({ status: 200, message: 'OK' });
-		else return response.json({ status: 401, message: 'Erro ao fazer login' });
+		if (bcrypt.compareSync(usuario.senha, senha)) return response.json({ status: 200, mensagem: 'OK' });
+		else return response.json({ status: 401, mensagem: 'Erro ao fazer login' });
 	}
 }
 
