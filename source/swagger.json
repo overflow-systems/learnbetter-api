@@ -1,0 +1,23 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "LearnBetter API",
+		"description": "API para o aplicativo de mentoria ",
+		"version": "1.0"
+	},
+	"produces": ["application/json"],
+	"host": "localhost:3333",
+	"basePath": "/",
+	"paths": {
+		"/usuario/buscar": {
+			"get": {
+				"x-swagger-router-controller": "middleware-name1",
+				"operationId": "swagTest",
+				"tags": ["/usuarios"],
+				"description": "",
+				"parameters": [],
+				"responses": {}
+			}
+		}
+	}
+}

@@ -6,10 +6,11 @@ import VerificarEmailCelular from '../utils/VerificarEmailCelular';
 import CriptografarSenha from '../utils/CriptografarSenha';
 
 import VerificarEmailCelularInterface from '../interfaces/VerificarEmailCelularInterface';
+import UsuarioInterface from '../interfaces/UsuarioInterface';
 
 class MentoradoController {
 	async buscarUsuario(request, response) {
-		const usuarios = await knex.select('id', 'nome').from('mentorados').unionAll(knex.select('id', 'nome').from('mentores'));
+		const usuarios = await knex.select('*').from('mentores').unionAll(knex.select('*').from('mentores'));
 
 		return response.json(usuarios);
 	}
@@ -114,6 +115,28 @@ class MentoradoController {
 		}
 
 		return response.json({ status: 400, message: 'Erro inesperado' });
+	}
+
+	async login(request, response) {
+		const { tipo } = request.headers;
+
+		const usuario: UsuarioInterface = {
+			email: request.body.email,
+			senha: request.body.senha,
+		};
+
+		let tabela: string;
+
+		if (tipo === 'mentorado') tabela = 'mentorados';
+		else if (tipo === 'mentor') tabela = 'mentores';
+		else return { status: 400, message: 'Tipo de usuário inválido' };
+
+		const { senha } = await knex.select('senha').from(tabela).where('email', usuario.email).first();
+
+		const bcrypt = require('bcryptjs');
+
+		if (bcrypt.compareSync(usuario.senha, senha)) return response.json({ status: 200, message: 'OK' });
+		else return response.json({ status: 401, message: 'Erro ao fazer login' });
 	}
 }
 
