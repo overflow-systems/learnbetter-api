@@ -1,6 +1,7 @@
 import express from 'express';
 
 import MentoriaController from './controller/MentoriaController';
+import NotificacaoControler from './controller/NotificacaoControler';
 import UsuarioController from './controller/UsuarioController';
 
 const rotas = express.Router();
@@ -13,8 +14,9 @@ rotas.get('/mentorias/quantidades', MentoriaController.buscarQuantidade);
 rotas.get('/usuario/buscar', UsuarioController.buscarUsuario);
 rotas.post('/usuario/criar', UsuarioController.criarUsuario);
 rotas.put('/usuario/editar', UsuarioController.editarUsuario);
-rotas.post('/usuario/login', UsuarioController.login)
+rotas.post('/usuario/login', UsuarioController.login);
 
+rotas.get('/notificacao/buscarNovasNotificacoes', NotificacaoControler.buscarNovasNotificacoes);
 
 rotas.use('/swagger', swaggerUi.serve);
 rotas.get('/swagger', swaggerUi.setup(swaggerDocumento));

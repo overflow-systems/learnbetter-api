@@ -7,6 +7,9 @@ import CriptografarSenha from '../utils/CriptografarSenha';
 
 import VerificarEmailCelularInterface from '../interfaces/VerificarEmailCelularInterface';
 import UsuarioInterface from '../interfaces/UsuarioInterface';
+import BuscarTabelaTipoUsuario from '../utils/BuscarTabelaTipoUsuario';
+import { TipoUsuarioEnum } from '../enum/TipoUsuarioEnum';
+import { TabelaUsuarioEnum } from '../enum/TabelaUsuarioEnum';
 
 class MentoradoController {
 	async buscarUsuario(request, response) {
@@ -125,11 +128,7 @@ class MentoradoController {
 			senha: request.body.senha,
 		};
 
-		let tabela: string;
-
-		if (tipo === 'mentorado') tabela = 'mentorados';
-		else if (tipo === 'mentor') tabela = 'mentores';
-		else return { status: 400, mensagem: 'Tipo de usuário inválido' };
+		const tabela: TabelaUsuarioEnum = BuscarTabelaTipoUsuario(tipo);
 
 		const { senha } = await knex.select('senha').from(tabela).where('email', usuario.email).first();
 

@@ -1,13 +1,14 @@
 import knex from '../database/connection';
+import { TabelaUsuarioEnum } from '../enum/TabelaUsuarioEnum';
+import { TipoUsuarioEnum } from '../enum/TipoUsuarioEnum';
 
 import VerificarEmailCelularInterface from '../interfaces/VerificarEmailCelularInterface';
+import BuscarTabelaTipoUsuario from './BuscarTabelaTipoUsuario';
 
-export default async function VerificarEmailCelular(tipo: string, celular: string, email: string): Promise<VerificarEmailCelularInterface> {
-	let tabela: string;
+export default async function VerificarEmailCelular(tipo: TipoUsuarioEnum, celular: string, email: string): Promise<VerificarEmailCelularInterface> {
 
-	if (tipo === 'mentorado') tabela = 'mentorados';
-	else if (tipo === 'mentor') tabela = 'mentores';
-	else return { status: 400, mensagem: 'Tipo de usuário inválido' };
+	const tabela: TabelaUsuarioEnum = BuscarTabelaTipoUsuario(tipo);
+	
 
 	if (await knex.select('celular').from(tabela).where('celular', celular).first()) return { status: 400, mensagem: 'Celular já utilizado' };
 
