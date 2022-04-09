@@ -1,4 +1,4 @@
 export enum TabelaUsuarioEnum {
-	MENTORES = 'mentores',
-	MENTORADOS = 'mentorados',
+  MENTORES = 'mentores',
+  MENTORADOS = 'mentorados',
 }

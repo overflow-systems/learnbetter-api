@@ -4,19 +4,27 @@ import { TabelaUsuarioEnum } from '../enum/TabelaUsuarioEnum';
 import BuscarTabelaTipoUsuario from '../utils/BuscarTabelaTipoUsuario';
 
 class NotificacaoController {
-	async buscarNovasNotificacoes(request, response) {
-		const { id, tipo } = request.headers;
+  async buscarNovasNotificacoes(request, response) {
+    const { id, tipo } = request.headers;
 
-		const tabela: TabelaUsuarioEnum = BuscarTabelaTipoUsuario(tipo);
+    const tabela: TabelaUsuarioEnum = BuscarTabelaTipoUsuario(tipo);
 
-		const usuario = await knex.select('id').from(tabela).where('id', id).first();
+    const usuario = await knex
+      .select('id')
+      .from(tabela)
+      .where('id', id)
+      .first();
 
-		if (!usuario.id) return response.json({ status: 400, mensagem: 'Usuário não encontrado' });
+    if (!usuario.id)
+      return response.json({ status: 400, mensagem: 'Usuário não encontrado' });
 
-		const notificacoes = await knex('notificacoes').where(`id_${tipo}`, id).where('status', StatusNotificacaoEnum.NAO_LIDA).orderBy('data_criacao', 'desc');
+    const notificacoes = await knex('notificacoes')
+      .where(`id_${tipo}`, id)
+      .where('status', StatusNotificacaoEnum.NAO_LIDA)
+      .orderBy('data_criacao', 'desc');
 
-		return response.json(notificacoes);
-	}
+    return response.json(notificacoes);
+  }
 }
 
 export default new NotificacaoController();

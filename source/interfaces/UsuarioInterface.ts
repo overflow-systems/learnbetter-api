@@ -1,4 +1,4 @@
 export default interface UsuarioInterface {
-	email: string;
-	senha: string;
+  email: string;
+  senha: string;
 }

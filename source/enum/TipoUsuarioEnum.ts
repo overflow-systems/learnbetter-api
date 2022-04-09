@@ -1,4 +1,4 @@
 export enum TipoUsuarioEnum {
-	MENTOR = 'mentor',
-	MENTORADO = 'mentorado',
+  MENTOR = 'mentor',
+  MENTORADO = 'mentorado',
 }

@@ -16,7 +16,10 @@ rotas.post('/usuario/criar', UsuarioController.criarUsuario);
 rotas.put('/usuario/editar', UsuarioController.editarUsuario);
 rotas.post('/usuario/login', UsuarioController.login);
 
-rotas.get('/notificacao/buscarNovasNotificacoes', NotificacaoControler.buscarNovasNotificacoes);
+rotas.get(
+  '/notificacao/buscarNovasNotificacoes',
+  NotificacaoControler.buscarNovasNotificacoes
+);
 
 rotas.use('/swagger', swaggerUi.serve);
 rotas.get('/swagger', swaggerUi.setup(swaggerDocumento));

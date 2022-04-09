@@ -1,4 +1,4 @@
 export default interface VerificarEmailCelular {
-	status: number;
-	mensagem: string;
+  status: number;
+  mensagem: string;
 }
