@@ -1,4 +1,4 @@
-import knex from '../database/connection';
+import conexao from '../database/conexao';
 import StatusMensagemInterface from '../interfaces/StatusMensagemInterface';
 import Usuario from '../models/Usuario';
 
@@ -12,7 +12,7 @@ export default async function ValidarRequestCriarUsuario(
     return { status: 400, mensagem: 'Tipo de usuário inválido' };
 
   if (
-    await knex
+    await conexao
       .select('celular')
       .from<Usuario>('usuarios')
       .where('celular', celular)

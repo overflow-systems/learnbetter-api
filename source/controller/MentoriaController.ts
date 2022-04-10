@@ -1,11 +1,12 @@
-import knex from '../database/connection';
+import conexao from '../database/conexao';
+import { Request, Response } from 'express';
 import RetornoErroPadrao from '../utils/RetornoErroPadrao';
 
 class MentoriaController {
-  async buscarQuantidade(request, response) {
+  async buscarQuantidade(request: Request, response: Response) {
     const { id, tipo, status } = request.headers;
 
-    await knex
+    await conexao
       .count('id as quantidade')
       .from('mentorias')
       .where(`id_${tipo}`, id)
@@ -18,10 +19,10 @@ class MentoriaController {
     return RetornoErroPadrao();
   }
 
-  buscarMentoriaUsuario(request, response) {
+  async buscarMentoriaUsuario(request: Request, response: Response) {
     const { id, tipo, status } = request.headers;
 
-    knex
+    await conexao
       .select('*')
       .from('mentorias')
       .where(`id_${tipo}`, id)
@@ -29,12 +30,14 @@ class MentoriaController {
       .then(mentorias => {
         return response.json(mentorias);
       });
+
+    return RetornoErroPadrao();
   }
 
-  buscarMentoriaTags(request, response) {
+  async buscarMentoriaTags(request: Request, response: Response) {
     const { id, tipo, status } = request.headers;
 
-    knex
+    await conexao
       .select('*')
       .from('mentorias')
       .where(`id_${tipo}`, id)
@@ -42,6 +45,8 @@ class MentoriaController {
       .then(mentorias => {
         return response.json(mentorias);
       });
+
+    return RetornoErroPadrao();
   }
 }
 

@@ -1,20 +1,19 @@
-import knex from '../database/connection';
+import conexao from '../database/conexao';
 import Usuario from '../models/Usuario';
 import { Request, Response } from 'express';
 import CriptografarSenha from '../utils/CriptografarSenha';
 import StatusMensagemInterface from '../interfaces/StatusMensagemInterface';
 import UsuarioInterface from '../interfaces/UsuarioInterface';
-import { TabelaUsuarioEnum } from '../enum/TabelaUsuarioEnum';
 import RetornoErroPadrao from '../utils/RetornoErroPadrao';
 import ValidarRequestCriarUsuario from '../utils/ValidarRequestCriarUsuario';
-import { kStringMaxLength } from 'buffer';
 import { TipoUsuarioEnum } from '../enum/TipoUsuarioEnum';
 import CompararSenha from '../utils/CompararSenha';
 import GerarToken from '../utils/GerarToken';
+import ValidarTipoUsuario from '../utils/ValidarTIpoUsuario';
 
 class UsuarioController {
   async buscarUsuario(request: Request, response: Response) {
-    await knex
+    await conexao
       .select('*')
       .from<Usuario>('usuarios')
       .then(usuarios => {
@@ -47,8 +46,9 @@ class UsuarioController {
       mentorado: request.body.mentorado ?? false,
     };
 
-    knex('usuarios')
+    conexao
       .insert(usuario)
+      .into('usuarios')
       .then(result => {
         return response.json({ status: 200, message: result });
       });
@@ -72,7 +72,7 @@ class UsuarioController {
       mentorado: request.body.mentorado,
     };
 
-    await knex
+    await conexao
       .update(usuario)
       .into('usuarios')
       .where('id', id)
@@ -86,17 +86,27 @@ class UsuarioController {
   async login(request: Request, response: Response) {
     const { tipo } = request.headers;
 
+    const validarTipoUsuario = ValidarTipoUsuario(tipo);
+
+    if (validarTipoUsuario.status === 400)
+      return response.json(validarTipoUsuario);
+
     const usuario: UsuarioInterface = {
       email: request.body.email,
       senha: request.body.senha,
-      tipoUsuario:
-        tipo == 'mentor' ? TipoUsuarioEnum.MENTOR : TipoUsuarioEnum.MENTORADO,
+      tipoUsuario: TipoUsuarioEnum[validarTipoUsuario.mensagem],
     };
 
-    await knex
+    await conexao
       .select('id', 'senha')
       .from<Usuario>('usuarios')
       .where('email', usuario.email)
+      .where(query => {
+        if (usuario.tipoUsuario === TipoUsuarioEnum.MENTOR)
+          query.where('mentor', true);
+        else if (usuario.tipoUsuario === TipoUsuarioEnum.MENTORADO)
+          query.where('mentorado', true);
+      })
       .first()
       .then(async (resultado: UsuarioInterface) => {
         usuario.id = resultado.id;
@@ -104,7 +114,7 @@ class UsuarioController {
         if (CompararSenha(resultado.senha, usuario.senha)) {
           const token = GerarToken(usuario);
 
-          await knex
+          await conexao
             .update({ token: token })
             .into('usuarios')
             .where({ id: usuario.id, email: usuario.email })

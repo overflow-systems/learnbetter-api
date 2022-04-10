@@ -3,6 +3,7 @@ import { GeneroEnum } from '../enum/GeneroEnum';
 export default interface Usuario {
   id?: number;
   nome: string;
+  token?: string;
   sobrenome: string;
   data_nascimento: string;
   email: string;
