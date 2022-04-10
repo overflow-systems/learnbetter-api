@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('tipo_curso').notNullable();
 
     table.integer('id_mentor').unsigned().notNullable();
-    table.foreign('id_mentor').references('id').inTable('mentores');
+    table.foreign('id_mentor').references('id').inTable('usuarios');
   });
 }
 

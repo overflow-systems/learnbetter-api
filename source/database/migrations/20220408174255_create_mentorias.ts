@@ -10,10 +10,10 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('status', 1).defaultTo(1).notNullable();
 
     table.integer('id_mentor').unsigned().notNullable();
-    table.foreign('id_mentor').references('id').inTable('mentores');
+    table.foreign('id_mentor').references('id').inTable('usuarios');
 
     table.integer('id_mentorado').unsigned().notNullable();
-    table.foreign('id_mentorado').references('id').inTable('mentorados');
+    table.foreign('id_mentorado').references('id').inTable('usuarios');
   });
 }
 
