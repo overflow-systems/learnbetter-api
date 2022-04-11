@@ -17,6 +17,8 @@ rotas.get('/usuario/buscar', UsuarioController.buscarUsuario);
 rotas.put('/usuario/editar', UsuarioController.editarUsuario);
 
 rotas.get('/notificacao/buscar', NotificacaoController.buscarNotificacoes);
+rotas.put('/notificacao/ler', NotificacaoController.lerNotificacao);
+rotas.put('/notificacao/desativar', NotificacaoController.desativarNotificacao);
 
 rotas.get('/mentoria/quantidade', MentoriaController.buscarQuantidade);
 rotas.get('/mentoria/buscar/usuario', MentoriaController.buscarMentoriaUsuario);
