@@ -10,6 +10,7 @@ import { TipoUsuarioEnum } from '../enum/TipoUsuarioEnum';
 import CompararSenha from '../utils/CompararSenha';
 import GerarToken from '../utils/GerarToken';
 import ValidarTipoUsuario from '../utils/ValidarTIpoUsuario';
+import UsuarioTags from '../models/UsuarioTags';
 
 class UsuarioController {
   async buscarUsuario(request: Request, response: Response) {
@@ -33,6 +34,8 @@ class UsuarioController {
 
     if (erros.status == 400) return response.json(erros);
 
+    console.log(request.body.tags.length);
+
     const usuario: Usuario = {
       nome: request.body.nome,
       sobrenome: request.body.sobrenome,
@@ -49,8 +52,20 @@ class UsuarioController {
     conexao
       .insert(usuario)
       .into('usuarios')
-      .then(result => {
-        return response.json({ status: 200, message: result });
+      .then(idUsuario => {
+        const tagsUsuario: UsuarioTags = request.body.tags.map(tag => ({
+          id_mentor: request.body.mentor ? idUsuario : null,
+          id_mentorado: request.body.mentorado ? idUsuario : null,
+          id_tag: tag,
+        }));
+
+        conexao
+          .insert(tagsUsuario)
+          .into('usuarios_tags')
+          .then(result => console.log(result))
+          .catch(err => console.error(err));
+
+        return response.json({ status: 200, message: idUsuario });
       });
 
     return RetornoErroPadrao();
