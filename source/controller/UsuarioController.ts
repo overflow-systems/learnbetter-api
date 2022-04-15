@@ -11,6 +11,7 @@ import CompararSenha from '../utils/CompararSenha';
 import GerarToken from '../utils/GerarToken';
 import ValidarTipoUsuario from '../utils/ValidarTIpoUsuario';
 import UsuarioTags from '../models/UsuarioTags';
+import { StatusMentoriaEnum } from '../enum/StatusMentoriaEnum';
 
 class UsuarioController {
   async buscarUsuario(request: Request, response: Response) {
@@ -33,8 +34,6 @@ class UsuarioController {
     );
 
     if (erros.status == 400) return response.json(erros);
-
-    console.log(request.body.tags.length);
 
     const usuario: Usuario = {
       nome: request.body.nome,
@@ -93,6 +92,23 @@ class UsuarioController {
       .where('id', id)
       .then(result => {
         return response.json({ status: 200, message: result });
+      });
+
+    return RetornoErroPadrao();
+  }
+
+  async deletarUsuario(request: Request, response: Response) {
+    const { id } = request.headers;
+
+    await conexao
+      .delete()
+      .from('usuarios')
+      .where('id', id)
+      .then(() => {
+        return response.json({
+          status: 200,
+          message: 'Usuário deletado com sucesso',
+        });
       });
 
     return RetornoErroPadrao();

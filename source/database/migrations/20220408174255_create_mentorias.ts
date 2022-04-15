@@ -9,11 +9,11 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('data_fim');
     table.integer('status', 1).defaultTo(1).notNullable();
 
-    table.integer('id_mentor').unsigned().notNullable();
-    table.foreign('id_mentor').references('id').inTable('usuarios');
+    table.integer('id_mentor').unsigned();
+    table.foreign('id_mentor').references('id').inTable('usuarios').onDelete('CASCADE');
 
-    table.integer('id_mentorado').unsigned().notNullable();
-    table.foreign('id_mentorado').references('id').inTable('usuarios');
+    table.integer('id_mentorado').unsigned();
+    table.foreign('id_mentorado').references('id').inTable('usuarios').onDelete('CASCADE');
   });
 }
 

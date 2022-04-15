@@ -7,9 +7,9 @@ export default async function AutenticacaoMiddleware(
   response: Response,
   next
 ) {
-  const { id, tipo, token } = request.headers;
+  const { id, token } = request.headers;
 
-  const tokenValidado: StatusMensagemInterface = await ValidarToken(id, token, tipo);
+  const tokenValidado: StatusMensagemInterface = await ValidarToken(id, token);
 
   if (tokenValidado.status === 200) next();
   if (tokenValidado.status === 401)

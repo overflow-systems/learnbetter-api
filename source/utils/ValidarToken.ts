@@ -4,8 +4,7 @@ import Usuario from '../models/Usuario';
 
 export default async function ValidarToken(
   id,
-  token,
-  tipo
+  token
 ): Promise<StatusMensagemInterface> {
   const usuario: Usuario = await conexao
     .select('*')

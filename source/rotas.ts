@@ -15,14 +15,16 @@ rotas.use(AutenticacaoMiddleware);
 
 rotas.get('/usuario/buscar', UsuarioController.buscarUsuario);
 rotas.put('/usuario/editar', UsuarioController.editarUsuario);
+rotas.delete('/usuario/deletar', UsuarioController.deletarUsuario);
 
 rotas.get('/notificacao/buscar', NotificacaoController.buscarNotificacoes);
 rotas.put('/notificacao/ler', NotificacaoController.lerNotificacao);
 rotas.put('/notificacao/desativar', NotificacaoController.desativarNotificacao);
 
 rotas.get('/mentoria/quantidade', MentoriaController.buscarQuantidade);
-rotas.get('/mentoria/buscar/usuario', MentoriaController.buscarMentoriaUsuario);
+rotas.get('/mentoria/buscar/usuario', MentoriaController.buscarMentoriaUsuario); //usuario logado
 rotas.get('/mentoria/buscar/tags', MentoriaController.buscarMentoriaTags);
+rotas.get('/mentoria/mostrar', MentoriaController.mostrarMentoria);
 
 rotas.use('/swagger', swaggerUi.serve);
 rotas.get('/swagger', swaggerUi.setup(swaggerDocumento));
