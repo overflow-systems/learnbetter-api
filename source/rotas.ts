@@ -25,6 +25,8 @@ rotas.get('/mentoria/quantidade', MentoriaController.buscarQuantidade);
 rotas.get('/mentoria/buscar/usuario', MentoriaController.buscarMentoriaUsuario); //usuario logado
 rotas.get('/mentoria/buscar/tags', MentoriaController.buscarMentoriaTags);
 rotas.get('/mentoria/mostrar', MentoriaController.mostrarMentoria);
+rotas.post('/mentoria/proposta/enviar', MentoriaController.enviarProposta);
+rotas.put('/mentoria/proposta/responder', MentoriaController.responderProposta);
 
 rotas.use('/swagger', swaggerUi.serve);
 rotas.get('/swagger', swaggerUi.setup(swaggerDocumento));
