@@ -4,6 +4,7 @@ import RetornoErroPadrao from '../utils/RetornoErroPadrao';
 import MentorInterface from '../interfaces/MentorInterface';
 import Mentoria from '../models/Mentoria';
 import { StatusMentoriaEnum } from '../enum/StatusMentoriaEnum';
+import { TipoUsuarioEnum } from '../enum/TipoUsuarioEnum';
 
 class MentoriaController {
   async buscarQuantidade(request: Request, response: Response) {
@@ -110,6 +111,32 @@ class MentoriaController {
       .then(resultado => {
         return response.json({ status: 200, mensagem: resultado });
       });
+
+    return RetornoErroPadrao();
+  }
+
+  async avaliarMentoria(request: Request, response: Response) {
+    const { id, tipo } = request.headers;
+    const { idmentoria, avaliacao } = request.body;
+
+    if (tipo == TipoUsuarioEnum.MENTOR) {
+      await conexao
+        .update({ avaliacao_mentorado: avaliacao })
+        .into('mentorias')
+        .where({ id: idmentoria, id_mentor: id, status: StatusMentoriaEnum.FINALIZADA })
+        .then(resultado => {
+          return response.json({ status: 200, mensagem: resultado });
+        });
+    }
+    if (tipo == TipoUsuarioEnum.MENTORADO) {
+      await conexao
+        .update({ avaliacao_mentor: avaliacao })
+        .into('mentorias')
+        .where({ id: idmentoria, id_mentorado: id, status: StatusMentoriaEnum.FINALIZADA })
+        .then(resultado => {
+          return response.json({ status: 200, mensagem: resultado });
+        });
+    }
 
     return RetornoErroPadrao();
   }
