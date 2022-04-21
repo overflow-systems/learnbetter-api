@@ -115,34 +115,24 @@ class UsuarioController {
   }
 
   async login(request: Request, response: Response) {
-    const { tipo } = request.headers;
-
-    const validarTipoUsuario = ValidarTipoUsuario(tipo);
-
-    if (validarTipoUsuario.status === 400)
-      return response.json(validarTipoUsuario);
-
     const usuario: UsuarioInterface = {
       email: request.body.email,
       senha: request.body.senha,
-      tipoUsuario: TipoUsuarioEnum[validarTipoUsuario.mensagem],
     };
 
     await conexao
-      .select('id', 'senha')
+      .select('id', 'senha', 'mentorado', 'mentor')
       .from<Usuario>('usuarios')
       .where('email', usuario.email)
-      .where(query => {
-        if (usuario.tipoUsuario === TipoUsuarioEnum.MENTOR)
-          query.where('mentor', true);
-        else if (usuario.tipoUsuario === TipoUsuarioEnum.MENTORADO)
-          query.where('mentorado', true);
-      })
-      .first()
-      .then(async (resultado: UsuarioInterface) => {
-        usuario.id = resultado.id;
+      .then(async resultados => {
+        resultados.forEach(resultado => {
+          if (resultado.mentor) usuario.mentor = resultado.mentor;
+          if (resultado.mentorado) usuario.mentorado = resultado.mentorado;
+        });
 
-        if (CompararSenha(resultado.senha, usuario.senha)) {
+        usuario.id = resultados[0].id;
+
+        if (CompararSenha(resultados[0].senha, usuario.senha)) {
           const token = GerarToken(usuario);
 
           await conexao
@@ -150,7 +140,13 @@ class UsuarioController {
             .into('usuarios')
             .where({ id: usuario.id, email: usuario.email })
             .then(() => {
-              return response.json({ status: 200, mensagem: token });
+              return response.json({
+                status: 200,
+                token: token,
+                id: usuario.id,
+                mentorado: usuario.mentorado,
+                mentor: usuario.mentor,
+              });
             });
         } else
           return response.json({
