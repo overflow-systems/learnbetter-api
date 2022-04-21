@@ -4,5 +4,7 @@ export default interface UsuarioInterface {
   id?: number;
   email: string;
   senha: string;
-  tipoUsuario: TipoUsuarioEnum;
+  tipoUsuario?: TipoUsuarioEnum;
+  mentorado?: boolean;
+  mentor?: boolean;
 }

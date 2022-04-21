@@ -8,8 +8,7 @@
 		"bcryptjs": "^2.4.3",
 		"express": "^4.17.2",
 		"knex": "^1.0.5",
-		"mysql": "^2.18.1",
-		"swagger-ui-express": "^4.3.0"
+		"mysql": "^2.18.1"
 	},
 	"scripts": {
 		"dev": "ts-node-dev --transpile-only --ignore-watch node_modules app.ts"

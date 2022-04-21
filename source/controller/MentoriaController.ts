@@ -5,6 +5,7 @@ import MentorInterface from '../interfaces/MentorInterface';
 import Mentoria from '../models/Mentoria';
 import { StatusMentoriaEnum } from '../enum/StatusMentoriaEnum';
 import { TipoUsuarioEnum } from '../enum/TipoUsuarioEnum';
+import { StatusMentorMentoradoEnum } from '../enum/StatusMentorMentoradoEnum';
 
 class MentoriaController {
   async buscarQuantidade(request: Request, response: Response) {
@@ -24,21 +25,6 @@ class MentoriaController {
   }
 
   async buscarMentoriaUsuario(request: Request, response: Response) {
-    const { id, tipo, status } = request.headers;
-
-    await conexao
-      .select('*')
-      .from('mentorias')
-      .where(`id_${tipo}`, id)
-      .where('status', status)
-      .then(mentorias => {
-        return response.json(mentorias);
-      });
-
-    return RetornoErroPadrao();
-  }
-
-  async buscarMentoriaTags(request: Request, response: Response) {
     const { id, tipo, status } = request.headers;
 
     await conexao
@@ -123,7 +109,11 @@ class MentoriaController {
       await conexao
         .update({ avaliacao_mentorado: avaliacao })
         .into('mentorias')
-        .where({ id: idmentoria, id_mentor: id, status: StatusMentoriaEnum.FINALIZADA })
+        .where({
+          id: idmentoria,
+          id_mentor: id,
+          status: StatusMentoriaEnum.FINALIZADA,
+        })
         .then(resultado => {
           return response.json({ status: 200, mensagem: resultado });
         });
@@ -132,11 +122,48 @@ class MentoriaController {
       await conexao
         .update({ avaliacao_mentor: avaliacao })
         .into('mentorias')
-        .where({ id: idmentoria, id_mentorado: id, status: StatusMentoriaEnum.FINALIZADA })
+        .where({
+          id: idmentoria,
+          id_mentorado: id,
+          status: StatusMentoriaEnum.FINALIZADA,
+        })
         .then(resultado => {
           return response.json({ status: 200, mensagem: resultado });
         });
     }
+
+    return RetornoErroPadrao();
+  }
+
+  async buscarMentores(request: Request, response: Response) {
+    const { id, tipo } = request.headers;
+
+    if (tipo == TipoUsuarioEnum.MENTOR)
+      return response.json({ status: 401, message: 'Não autorizado' });
+
+    const colunas = `COUNT(DISTINCT tags.id) as score,
+                     CONCAT(mentor.nome, ' ', mentor.sobrenome) as nome,
+                     GROUP_CONCAT(DISTINCT tags.nome) as tags,
+                     mentor.data_criacao,
+                     ROUND(AVG(mentorias.avaliacao_mentor), 2) as nota,
+                     mentor.apresentacao,
+                     COUNT(mentorias.id) as quantidade_mentoria,
+                     ROUND((AVG(mentorias.avaliacao_mentor) * 100) / 5, 2) as satisfacao`;
+
+    const query = `select ${colunas}
+                     from usuarios as mentor
+                     inner join usuarios_tags mentor_ut on mentor_ut.id_mentor = mentor.id
+                     inner join usuarios_tags mentorado_ut on mentorado_ut .id_mentorado = ${id}
+                     inner join tags on tags.id = mentor_ut.id_tag
+                     left join mentorias on mentorias.id_mentor = mentor.id
+                     left join mentor_mentorado amr on amr.id_mentor = mentor.id and amr.id_mentorado = ${id} and amr.status <> ${StatusMentorMentoradoEnum.RECUSADO}
+                     where mentor.mentor=true and mentorado_ut.id_tag = mentor_ut.id_tag
+                   group by mentor.id
+                     order by score desc, nota desc;`;
+
+    await conexao.raw(query).then(resultado => {
+      return response.json(resultado[0]);
+    });
 
     return RetornoErroPadrao();
   }
