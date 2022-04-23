@@ -44,8 +44,8 @@ class UsuarioController {
       senha: CriptografarSenha(request.body.senha),
       genero: request.body.genero,
       apresentacao: request.body.apresentacao ?? null,
-      mentor: request.body.mentor ?? false,
-      mentorado: request.body.mentorado ?? false,
+      mentor: request.headers.tipo == 'mentor' ? true : false,
+      mentorado: request.headers.tipo == 'mentorado' ? true : false,
     };
 
     conexao
