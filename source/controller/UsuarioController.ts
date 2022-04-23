@@ -6,12 +6,9 @@ import StatusMensagemInterface from '../interfaces/StatusMensagemInterface';
 import UsuarioInterface from '../interfaces/UsuarioInterface';
 import RetornoErroPadrao from '../utils/RetornoErroPadrao';
 import ValidarRequestCriarUsuario from '../utils/ValidarRequestCriarUsuario';
-import { TipoUsuarioEnum } from '../enum/TipoUsuarioEnum';
 import CompararSenha from '../utils/CompararSenha';
 import GerarToken from '../utils/GerarToken';
-import ValidarTipoUsuario from '../utils/ValidarTIpoUsuario';
 import UsuarioTags from '../models/UsuarioTags';
-import { StatusMentoriaEnum } from '../enum/StatusMentoriaEnum';
 
 class UsuarioController {
   async buscarUsuario(request: Request, response: Response) {
@@ -29,8 +26,7 @@ class UsuarioController {
     const erros: StatusMensagemInterface = await ValidarRequestCriarUsuario(
       request.body.celular,
       request.body.email,
-      request.body.mentor,
-      request.body.mentorado
+      request.headers.tipo
     );
 
     if (erros.status == 400) return response.json(erros);
@@ -53,8 +49,8 @@ class UsuarioController {
       .into('usuarios')
       .then(idUsuario => {
         const tagsUsuario: UsuarioTags = request.body.tags.map(tag => ({
-          id_mentor: request.body.mentor ? idUsuario : null,
-          id_mentorado: request.body.mentorado ? idUsuario : null,
+          id_mentor: request.headers.tipo == 'mentor' ? idUsuario : null,
+          id_mentorado: request.headers.tipo == 'mentorado' ? idUsuario : null,
           id_tag: tag,
         }));
 

@@ -5,10 +5,9 @@ import Usuario from '../models/Usuario';
 export default async function ValidarRequestCriarUsuario(
   celular: string,
   email: string,
-  mentor: boolean,
-  mentorado: boolean
+  tipo: any
 ): Promise<StatusMensagemInterface> {
-  if ((!mentor && !mentorado) || (mentor && mentorado))
+  if (tipo != 'mentor' && tipo != 'mentorado')
     return { status: 400, mensagem: 'Tipo de usuário inválido' };
 
   if (
