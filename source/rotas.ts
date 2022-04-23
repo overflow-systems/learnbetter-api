@@ -14,6 +14,7 @@ rotas.use(AutenticacaoMiddleware);
 rotas.get('/usuario/buscar', UsuarioController.buscarUsuario);
 rotas.put('/usuario/editar', UsuarioController.editarUsuario);
 rotas.delete('/usuario/deletar', UsuarioController.deletarUsuario);
+rotas.put('/usuario/alterar-tipo-conta', UsuarioController.alterarTipoConta);
 
 rotas.get('/notificacao/buscar', NotificacaoController.buscarNotificacoes);
 rotas.put('/notificacao/ler', NotificacaoController.lerNotificacao);

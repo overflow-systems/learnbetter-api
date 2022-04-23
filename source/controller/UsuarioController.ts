@@ -57,10 +57,10 @@ class UsuarioController {
         conexao
           .insert(tagsUsuario)
           .into('usuarios_tags')
-          .then(result => console.log(result))
+          .then(result => {
+            return response.json({ status: 200, message: idUsuario });
+          })
           .catch(err => console.error(err));
-
-        return response.json({ status: 200, message: idUsuario });
       });
 
     return RetornoErroPadrao();
@@ -149,6 +149,23 @@ class UsuarioController {
             status: 401,
             mensagem: 'Erro ao fazer login',
           });
+      });
+
+    return RetornoErroPadrao();
+  }
+
+  async alterarTipoConta(request: Request, response: Response) {
+    const { id } = request.headers;
+
+    await conexao
+      .update({ mentor: true, mentorado: true })
+      .into('usuarios')
+      .where('id', id)
+      .then(resultado => {
+        return response.json({
+          status: 200,
+          mensagem: 'Tipo de conta alterado com sucesso',
+        });
       });
 
     return RetornoErroPadrao();
