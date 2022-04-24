@@ -35,5 +35,6 @@ rotas.get('/chat/buscar', ChatController.buscarChat);
 rotas.post('/chat/mensagem/enviar', ChatController.enviarMensagem);
 rotas.get('/chat/listar', ChatController.listarChats);
 
+rotas.put('/tag/editar', TagController.editarTags);
 
 export default rotas;
