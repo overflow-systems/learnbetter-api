@@ -1,4 +1,3 @@
-require('dotenv/config');
 import express from 'express';
 import rotas from './source/rotas';
 
