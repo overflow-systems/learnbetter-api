@@ -10,6 +10,7 @@ const rotas = express.Router();
 
 rotas.post('/usuario/login', UsuarioController.login);
 rotas.post('/usuario/criar', UsuarioController.criarUsuario);
+rotas.get('/tag/listar', TagController.listarTags);
 
 rotas.use(AutenticacaoMiddleware);
 
@@ -34,6 +35,5 @@ rotas.get('/chat/buscar', ChatController.buscarChat);
 rotas.post('/chat/mensagem/enviar', ChatController.enviarMensagem);
 rotas.get('/chat/listar', ChatController.listarChats);
 
-rotas.get('/tag/listar', TagController.listarTags);
 
 export default rotas;
