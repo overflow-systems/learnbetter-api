@@ -3,6 +3,7 @@ import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('mensagens', table => {
+    table.increments('id').primary();
     table.text('mensagem').notNullable();
     table.timestamp('data_envio').defaultTo(knex.fn.now()).notNullable();
     table.string('tipo_enviado').notNullable();

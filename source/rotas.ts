@@ -30,6 +30,7 @@ rotas.put('/mentoria/avaliar', MentoriaController.avaliarMentoria);
 rotas.get('/mentoria/mentores', MentoriaController.buscarMentores);
 
 rotas.get('/chat/buscar', ChatController.buscarChat);
-rotas.post('/chat/enviar-mensagem', ChatController.enviarMensagem);
+rotas.post('/chat/mensagem/enviar', ChatController.enviarMensagem);
+rotas.get('/chat/listar', ChatController.listarChats);
 
 export default rotas;

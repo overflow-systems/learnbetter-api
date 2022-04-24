@@ -59,6 +59,32 @@ class ChatController {
 
     return RetornoErroPadrao();
   }
+
+  async listarChats(request: Request, response: Response) {
+    const { id, tipo } = request.headers;
+
+    let query: string = '';
+
+    if (tipo == TipoUsuarioEnum.MENTOR) {
+      query = `select mensagens.id_mentorado, MAX(mensagens.data_envio) as data_envio, mentorado.* from mensagens
+      inner join usuarios as mentorado on mentorado.id = mensagens.id_mentorado
+      where mensagens.id_mentor=${id}
+      group by mensagens.id_mentorado`;
+    }
+
+    if (tipo == TipoUsuarioEnum.MENTORADO) {
+      query = `select mensagens.id_mentor, MAX(mensagens.data_envio), mentor.* from mensagens
+      inner join usuarios as mentor on mentor.id = mensagens.id_mentor
+      where mensagens.id_mentorado=${id}
+      group by mensagens.id_mentor`;
+    }
+
+    await conexao.raw(query).then(mensagens => {
+      return response.json(mensagens[0]);
+    });
+
+    return RetornoErroPadrao();
+  }
 }
 
 export default new ChatController();
