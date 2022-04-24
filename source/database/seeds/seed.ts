@@ -288,4 +288,42 @@ export async function seed(knex: Knex): Promise<void> {
       avaliacao_mentorado: 5,
     },
   ]);
+
+  await knex('mensagens').insert([
+    {
+      mensagem: 'Mensagem teste 1',
+      data_envio: '2022-04-23 10:03:52',
+      id_mentor: 5,
+      id_mentorado: 1,
+      tipo_enviado: 'mentorado',
+    },
+    {
+      mensagem: 'Mensagem teste 2',
+      data_envio: '2022-04-23 11:03:52',
+      id_mentor: 5,
+      id_mentorado: 1,
+      tipo_enviado: 'mentor',
+    },
+    {
+      mensagem: 'Mensagem teste 3',
+      data_envio: '2022-04-23 12:03:52',
+      id_mentor: 5,
+      id_mentorado: 1,
+      tipo_enviado: 'mentor',
+    },
+    {
+      mensagem: 'Mensagem teste 4',
+      data_envio: '2022-04-23 13:03:52',
+      id_mentor: 5,
+      id_mentorado: 1,
+      tipo_enviado: 'mentorado',
+    },
+    {
+      mensagem: 'Mensagem teste 5',
+      data_envio: '2022-04-23 14:03:52',
+      id_mentor: 5,
+      id_mentorado: 1,
+      tipo_enviado: 'mentorado',
+    },
+  ]);
 }

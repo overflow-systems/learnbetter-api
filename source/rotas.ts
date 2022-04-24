@@ -2,6 +2,7 @@ import express from 'express';
 import MentoriaController from './controller/MentoriaController';
 import NotificacaoController from './controller/NotificacaoController';
 import UsuarioController from './controller/UsuarioController';
+import ChatController from './controller/ChatController';
 import AutenticacaoMiddleware from './middleware/AutenticacaoMiddleware';
 
 const rotas = express.Router();
@@ -27,5 +28,7 @@ rotas.post('/mentoria/proposta/enviar', MentoriaController.enviarProposta);
 rotas.put('/mentoria/proposta/responder', MentoriaController.responderProposta);
 rotas.put('/mentoria/avaliar', MentoriaController.avaliarMentoria);
 rotas.get('/mentoria/mentores', MentoriaController.buscarMentores);
+
+rotas.get('/chat/buscar', ChatController.buscarChat);
 
 export default rotas;
