@@ -73,7 +73,7 @@ class ChatController {
     }
 
     if (tipo == TipoUsuarioEnum.MENTORADO) {
-      query = `select mensagens.id_mentor, MAX(mensagens.data_envio), mentor.* from mensagens
+      query = `select mensagens.id_mentor, MAX(mensagens.data_envio) as data_envio, mentor.* from mensagens
       inner join usuarios as mentor on mentor.id = mensagens.id_mentor
       where mensagens.id_mentorado=${id}
       group by mensagens.id_mentor`;

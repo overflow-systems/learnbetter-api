@@ -26,7 +26,7 @@ class UsuarioController {
     const erros: StatusMensagemInterface = await ValidarRequestCriarUsuario(
       request.body.celular,
       request.body.email,
-      request.headers.tipo
+      request.body.tipo
     );
 
     if (erros.status == 400) return response.json(erros);
@@ -40,8 +40,8 @@ class UsuarioController {
       senha: CriptografarSenha(request.body.senha),
       genero: request.body.genero,
       apresentacao: request.body.apresentacao ?? null,
-      mentor: request.headers.tipo == 'mentor' ? true : false,
-      mentorado: request.headers.tipo == 'mentorado' ? true : false,
+      mentor: request.body.tipo == 'mentor' ? true : false,
+      mentorado: request.body.tipo == 'mentorado' ? true : false,
     };
 
     conexao
@@ -49,8 +49,8 @@ class UsuarioController {
       .into('usuarios')
       .then(idUsuario => {
         const tagsUsuario: UsuarioTags = request.body.tags.map(tag => ({
-          id_mentor: request.headers.tipo == 'mentor' ? idUsuario : null,
-          id_mentorado: request.headers.tipo == 'mentorado' ? idUsuario : null,
+          id_mentor: request.body.tipo == 'mentor' ? idUsuario : null,
+          id_mentorado: request.body.tipo == 'mentorado' ? idUsuario : null,
           id_tag: tag,
         }));
 
