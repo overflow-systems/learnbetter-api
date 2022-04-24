@@ -13,7 +13,7 @@ class ChatController {
         'mentor.nome as mentor_nome',
         'mentor.sobrenome as mentor_sobrenome',
         'mentorado.nome as mentorado_nome',
-        'mentorado.sobrenome as mentorado_sobrenome',
+        'mentorado.sobrenome as mentorado_sobrenome'
       )
       .innerJoin('usuarios as mentor', 'mentor.id', 'mensagens.id_mentor')
       .innerJoin(
@@ -36,7 +36,7 @@ class ChatController {
         return response.json(mensagens);
       });
 
-    return response.json(RetornoErroPadrao());
+    return RetornoErroPadrao();
   }
 }
 
