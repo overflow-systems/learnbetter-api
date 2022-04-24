@@ -38,6 +38,27 @@ class ChatController {
 
     return RetornoErroPadrao();
   }
+
+  async enviarMensagem(request: Request, response: Response) {
+    const { id, tipo } = request.headers;
+
+    await conexao('mensagens')
+      .insert({
+        id_mentor: tipo == TipoUsuarioEnum.MENTOR ? id : request.body.id_mentor,
+        id_mentorado:
+          tipo == TipoUsuarioEnum.MENTORADO ? id : request.body.id_mentorado,
+        mensagem: request.body.mensagem,
+        tipo_enviado: tipo,
+      })
+      .then(() => {
+        return response.json({
+          status: 200,
+          mensagem: 'Mensagem enviada com sucesso!',
+        });
+      });
+
+    return RetornoErroPadrao();
+  }
 }
 
 export default new ChatController();
