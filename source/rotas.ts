@@ -3,6 +3,7 @@ import MentoriaController from './controller/MentoriaController';
 import NotificacaoController from './controller/NotificacaoController';
 import UsuarioController from './controller/UsuarioController';
 import ChatController from './controller/ChatController';
+import TagController from './controller/TagController';
 import AutenticacaoMiddleware from './middleware/AutenticacaoMiddleware';
 
 const rotas = express.Router();
@@ -32,5 +33,7 @@ rotas.get('/mentoria/mentores', MentoriaController.buscarMentores);
 rotas.get('/chat/buscar', ChatController.buscarChat);
 rotas.post('/chat/mensagem/enviar', ChatController.enviarMensagem);
 rotas.get('/chat/listar', ChatController.listarChats);
+
+rotas.get('/tag/listar', TagController.listarTags);
 
 export default rotas;
