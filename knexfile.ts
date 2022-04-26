@@ -2,8 +2,6 @@ require('dotenv/config');
 import type { Knex } from 'knex';
 import path from 'path';
 
-// Update with your config settings.
-
 const config: Knex.Config = {
   client: 'mysql',
   connection: {
