@@ -7,16 +7,13 @@ class NotificacaoController {
   async buscarNotificacoes(request: Request, response: Response) {
     const { id, tipo, status } = request.headers;
 
-    const statusNotificacao: StatusNotificacaoEnum =
-      StatusNotificacaoEnum[status[0]];
-
     const notificacoes = await conexao
       .select('mensagem', 'data_criacao')
       .from('notificacoes')
       .where(`id_${tipo}`, id)
       .where('status', status)
       .where(query => {
-        if (statusNotificacao === StatusNotificacaoEnum.LIDA)
+        if (Number(status) == StatusNotificacaoEnum.LIDA)
           query.orWhere('status', StatusNotificacaoEnum.NAO_LIDA);
       })
       .orderBy('data_criacao', 'desc');
