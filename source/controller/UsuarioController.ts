@@ -121,6 +121,12 @@ class UsuarioController {
       .from<Usuario>('usuarios')
       .where('email', usuario.email)
       .then(async resultados => {
+        if (resultados.length <= 0)
+          return response.json({
+            status: 400,
+            message: 'Usuário não encontrado',
+          });
+
         resultados.forEach(resultado => {
           if (resultado.mentor) usuario.mentor = resultado.mentor;
           if (resultado.mentorado) usuario.mentorado = resultado.mentorado;

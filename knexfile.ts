@@ -3,13 +3,13 @@ import type { Knex } from 'knex';
 import path from 'path';
 
 const config: Knex.Config = {
-  client: 'mysql',
+  client: process.env.DB_CLIENT,
   connection: {
-    host: 'mysql.overflow.dev.br',
-    user: 'overflow02',
-    password: 'learnbetter1407',
-    database: 'overflow02',
-    port: 3306,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: Number(process.env.DB_PORT),
   },
   migrations: {
     directory: path.resolve(__dirname, 'source', 'database', 'migrations'),

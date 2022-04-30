@@ -5,11 +5,18 @@ import UsuarioController from './controller/UsuarioController';
 import ChatController from './controller/ChatController';
 import TagController from './controller/TagController';
 import AutenticacaoMiddleware from './middleware/AutenticacaoMiddleware';
+import BodyParser from 'body-parser';
+import { errors } from 'celebrate';
+import {
+  LoginValidation,
+  CriarUsuarioValidation,
+} from './validations/Validations';
 
-const rotas = express.Router();
+const rotas = express();
+rotas.use(BodyParser.json());
 
-rotas.post('/usuario/login', UsuarioController.login);
-rotas.post('/usuario/criar', UsuarioController.criarUsuario);
+rotas.post('/usuario/login', LoginValidation, UsuarioController.login);
+rotas.post('/usuario/criar', CriarUsuarioValidation, UsuarioController.criarUsuario);
 rotas.get('/tag/listar', TagController.listarTags);
 
 rotas.use(AutenticacaoMiddleware);
@@ -36,5 +43,7 @@ rotas.post('/chat/mensagem/enviar', ChatController.enviarMensagem);
 rotas.get('/chat/listar', ChatController.listarChats);
 
 rotas.put('/tag/editar', TagController.editarTags);
+
+rotas.use(errors());
 
 export default rotas;
