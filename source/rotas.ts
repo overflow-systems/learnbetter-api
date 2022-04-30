@@ -19,7 +19,7 @@ rotas.post('/usuario/login', LoginValidation, UsuarioController.login);
 rotas.post('/usuario/criar', CriarUsuarioValidation, UsuarioController.criarUsuario);
 rotas.get('/tag/listar', TagController.listarTags);
 
-rotas.use(AutenticacaoMiddleware);
+// rotas.use(AutenticacaoMiddleware);
 
 rotas.get('/usuario/buscar', UsuarioController.buscarUsuario);
 rotas.put('/usuario/editar', UsuarioController.editarUsuario);
