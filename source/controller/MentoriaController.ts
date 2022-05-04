@@ -9,7 +9,8 @@ import { StatusMentorMentoradoEnum } from '../enum/StatusMentorMentoradoEnum';
 
 class MentoriaController {
   async buscarQuantidade(request: Request, response: Response) {
-    const { id, tipo, status } = request.headers;
+    const { id, tipo } = request.headers;
+    const { status }: any = request.query;
 
     await conexao
       .count('id as quantidade')
@@ -25,7 +26,8 @@ class MentoriaController {
   }
 
   async buscarMentoriaUsuario(request: Request, response: Response) {
-    const { id, tipo, status } = request.headers;
+    const { id, tipo } = request.headers;
+    const { status }: any = request.query;
 
     await conexao
       .select('*')
@@ -40,13 +42,16 @@ class MentoriaController {
   }
 
   async mostrarMentoria(request: Request, response: Response) {
-    if (request.headers.tipo == 'mentor')
+    const { tipo } = request.headers;
+    const { idmentor }: any = request.query;
+
+    if (tipo == 'mentor')
       return response.json({ status: 401, message: 'Não autorizado' });
 
     await conexao
       .select('*')
       .from<MentorInterface>('usuarios')
-      .where('id', request.headers.idmentor)
+      .where('id', idmentor)
       .first()
       .then(async (mentor: MentorInterface) => {
         const resultado = await conexao

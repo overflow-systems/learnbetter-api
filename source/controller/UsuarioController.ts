@@ -11,7 +11,7 @@ import GerarToken from '../utils/GerarToken';
 import UsuarioTags from '../models/UsuarioTags';
 
 class UsuarioController {
-  async buscarUsuario(request: Request, response: Response) {
+  async buscarUsuarios(request: Request, response: Response) {
     await conexao
       .select('*')
       .from<Usuario>('usuarios')
@@ -48,19 +48,16 @@ class UsuarioController {
       .insert(usuario)
       .into('usuarios')
       .then(idUsuario => {
-        const tagsUsuario: UsuarioTags = request.body.tags.map(tag => ({
-          id_mentor: request.body.tipo == 'mentor' ? idUsuario : null,
-          id_mentorado: request.body.tipo == 'mentorado' ? idUsuario : null,
-          id_tag: tag,
-        }));
+        if (request.body.tags?.length > 0) {
+          const tagsUsuario: UsuarioTags = request.body.tags.map(tag => ({
+            id_mentor: request.body.tipo == 'mentor' ? idUsuario : null,
+            id_mentorado: request.body.tipo == 'mentorado' ? idUsuario : null,
+            id_tag: tag,
+          }));
 
-        conexao
-          .insert(tagsUsuario)
-          .into('usuarios_tags')
-          .then(result => {
-            return response.json({ status: 200, message: idUsuario });
-          })
-          .catch(err => console.error(err));
+          conexao.insert(tagsUsuario).into('usuarios_tags');
+        }
+        return response.json({ status: 200, message: idUsuario });
       });
 
     return RetornoErroPadrao();
@@ -78,8 +75,6 @@ class UsuarioController {
       genero: request.body.genero,
       apresentacao: request.body.apresentacao,
       data_ultima_atualizacao: new Date(Date.now()),
-      mentor: request.body.mentor,
-      mentorado: request.body.mentorado,
     };
 
     await conexao

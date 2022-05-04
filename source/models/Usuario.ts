@@ -14,6 +14,6 @@ export default interface Usuario {
   data_criacao?: Date;
   data_ultima_atualizacao?: Date;
 
-  mentor: boolean;
-  mentorado: boolean;
+  mentor?: boolean;
+  mentorado?: boolean;
 }

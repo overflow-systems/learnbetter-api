@@ -5,7 +5,8 @@ import RetornoErroPadrao from '../utils/RetornoErroPadrao';
 
 class NotificacaoController {
   async buscarNotificacoes(request: Request, response: Response) {
-    const { id, tipo, status } = request.headers;
+    const { id, tipo } = request.headers;
+    const { status }: any = request.query;
 
     const notificacoes = await conexao
       .select('mensagem', 'data_criacao')
@@ -22,7 +23,7 @@ class NotificacaoController {
   }
 
   async lerNotificacao(request: Request, response: Response) {
-    const { idnotificacao } = request.headers;
+    const { idnotificacao }: any = request.query;
 
     await conexao
       .update({ status: StatusNotificacaoEnum.LIDA })
@@ -39,7 +40,7 @@ class NotificacaoController {
   }
 
   async desativarNotificacao(request: Request, response: Response) {
-    const { idnotificacao } = request.headers;
+    const { idnotificacao }: any = request.query;
 
     await conexao
       .update({ status: StatusNotificacaoEnum.DESATIVADA })

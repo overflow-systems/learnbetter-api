@@ -10,6 +10,15 @@ import { errors } from 'celebrate';
 import {
   LoginValidation,
   CriarUsuarioValidation,
+  BuscarUsuariosValidation,
+  EditarUsuarioValidation,
+  DeletarUsuarioValidation,
+  AlterarTipoContaValidation,
+  BuscarNotificacoesValidation,
+  LerNotificacaoValidation,
+  DesativarNotificacaoValidation,
+  BuscarQuantidadeValidation,
+  BuscarMentoriaUsuarioValidation,
 } from './validations/Validations';
 
 const rotas = express();
@@ -21,17 +30,17 @@ rotas.get('/tag/listar', TagController.listarTags);
 
 // rotas.use(AutenticacaoMiddleware);
 
-rotas.get('/usuario/buscar', UsuarioController.buscarUsuario);
-rotas.put('/usuario/editar', UsuarioController.editarUsuario);
-rotas.delete('/usuario/deletar', UsuarioController.deletarUsuario);
-rotas.put('/usuario/alterar-tipo-conta', UsuarioController.alterarTipoConta);
+rotas.get('/usuario/buscar', BuscarUsuariosValidation, UsuarioController.buscarUsuarios);
+rotas.put('/usuario/editar', EditarUsuarioValidation, UsuarioController.editarUsuario);
+rotas.delete('/usuario/deletar', DeletarUsuarioValidation, UsuarioController.deletarUsuario);
+rotas.put('/usuario/alterar-tipo-conta', AlterarTipoContaValidation, UsuarioController.alterarTipoConta);
 
-rotas.get('/notificacao/buscar', NotificacaoController.buscarNotificacoes);
-rotas.put('/notificacao/ler', NotificacaoController.lerNotificacao);
-rotas.put('/notificacao/desativar', NotificacaoController.desativarNotificacao);
+rotas.get('/notificacao/buscar', BuscarNotificacoesValidation, NotificacaoController.buscarNotificacoes);
+rotas.put('/notificacao/ler', LerNotificacaoValidation, NotificacaoController.lerNotificacao);
+rotas.put('/notificacao/desativar', DesativarNotificacaoValidation, NotificacaoController.desativarNotificacao);
 
-rotas.get('/mentoria/quantidade', MentoriaController.buscarQuantidade);
-rotas.get('/mentoria/buscar/usuario', MentoriaController.buscarMentoriaUsuario); //usuario logado
+rotas.get('/mentoria/quantidade', BuscarQuantidadeValidation, MentoriaController.buscarQuantidade);
+rotas.get('/mentoria/buscar/usuario', BuscarMentoriaUsuarioValidation, MentoriaController.buscarMentoriaUsuario); //usuario logado
 rotas.get('/mentoria/mostrar', MentoriaController.mostrarMentoria);
 rotas.post('/mentoria/proposta/enviar', MentoriaController.enviarProposta);
 rotas.put('/mentoria/proposta/responder', MentoriaController.responderProposta);
