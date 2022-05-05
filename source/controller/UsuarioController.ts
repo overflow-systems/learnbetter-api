@@ -176,21 +176,33 @@ class UsuarioController {
     const senha = Math.random().toString(36).slice(-8);
 
     await conexao
-      .update({ senha: CriptografarSenha(senha) })
-      .into('usuarios')
+      .select('id')
+      .from<Usuario>('usuarios')
       .where('email', request.body.email)
-      .then((resultado: any) => {
-        if (resultado.length <= 0)
+      .then(async resultados => {
+        if (resultados.length <= 0)
           return response.json({
             status: 400,
             mensagem: 'Usuário não encontrado',
           });
 
-        return response.json({
-          status: 200,
-          mensagem: 'Senha nova gerada',
-          senha,
-        });
+        await conexao
+          .update({ senha: CriptografarSenha(senha) })
+          .into('usuarios')
+          .where('email', request.body.email)
+          .then((resultado: any) => {
+            if (resultado.length <= 0)
+              return response.json({
+                status: 400,
+                mensagem: 'Usuário não encontrado',
+              });
+
+            return response.json({
+              status: 200,
+              mensagem: 'Senha nova gerada',
+              senha,
+            });
+          });
       });
 
     return RetornoErroPadrao();
