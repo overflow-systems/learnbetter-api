@@ -173,14 +173,12 @@ class UsuarioController {
   }
 
   async esqueciMinhaSenha(request: Request, response: Response) {
-    const { id } = request.headers;
-
     const senha = Math.random().toString(36).slice(-8);
 
     await conexao
       .update({ senha: CriptografarSenha(senha) })
       .into('usuarios')
-      .where('id', id)
+      .where('email', request.body.email)
       .then(resultado => {
         return response.json({
           status: 200,
