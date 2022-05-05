@@ -111,6 +111,8 @@ class UsuarioController {
       senha: request.body.senha,
     };
 
+    console.log(request.headers, "header");
+
     await conexao
       .select('id', 'senha', 'mentorado', 'mentor')
       .from<Usuario>('usuarios')
