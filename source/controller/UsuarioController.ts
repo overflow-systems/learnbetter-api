@@ -148,7 +148,7 @@ class UsuarioController {
         } else
           return response.json({
             status: 401,
-            mensagem: 'Erro ao fazer login',
+            mensagem: 'Credenciais inválidas, tente novamente!',
           });
       });
 
