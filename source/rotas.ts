@@ -30,6 +30,7 @@ import {
   EditarTagsValidation,
   AlterarSenhaValidation,
   EsqueciMinhaSenhaValidation,
+  ValidarCredenciaisValidation,
 } from './validations/Validations';
 
 const rotas = express();
@@ -39,6 +40,7 @@ rotas.post('/usuario/login', LoginValidation, UsuarioController.login);
 rotas.post('/usuario/criar', CriarUsuarioValidation, UsuarioController.criarUsuario);
 rotas.put('/usuario/esqueci-minha-senha', EsqueciMinhaSenhaValidation, UsuarioController.esqueciMinhaSenha);
 rotas.get('/tag/listar', TagController.listarTags);
+rotas.get('/usuario/validar-credenciais', ValidarCredenciaisValidation, UsuarioController.validarCredenciais);
 
 // rotas.use(AutenticacaoMiddleware);
 

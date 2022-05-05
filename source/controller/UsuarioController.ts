@@ -224,6 +224,18 @@ class UsuarioController {
 
     return RetornoErroPadrao();
   }
+
+  async validarCredenciais(request: Request, response: Response) {
+    const erros: StatusMensagemInterface = await ValidarRequestCriarUsuario(
+      request.body.celular,
+      request.body.email,
+      request.body.tipo
+    );
+
+    if (erros.status == 400) return response.json(erros);
+
+    return response.json({ status: 200, mensagem: 'Credenciais válidas' });
+  }
 }
 
 export default new UsuarioController();
