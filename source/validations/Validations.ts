@@ -8,7 +8,16 @@ import { BuscarNotificacoesValidation } from './BuscarNotificacoesValidation';
 import { LerNotificacaoValidation } from './LerNotificacaoValidation';
 import { DesativarNotificacaoValidation } from './DesativarNotificacaoValidation';
 import { BuscarQuantidadeValidation } from './BuscarQuantidadeValidation';
-import { BuscarMentoriaUsuarioValidation } from './BuscarMentoriaUsuarioValidation';
+import { BuscarMentoriaValidation } from './BuscarMentoriaValidation';
+import { MostrarMentoriaValidation } from './MostrarMentoriaValidation';
+import { EnviarPropostaValidation } from './EnviarPropostaValidation';
+import { ResponderPropostaValidation } from './ResponderPropostaValidation';
+import { AvaliarMentoriaValidation } from './AvaliarMentoriaValidation';
+import { BuscarMentoresValidation } from './BuscarMentoresValidation';
+import { BuscarChatValidation } from './BuscarChatValidation';
+import { EnviarMensagemValidation } from './EnviarMensagemValidation';
+import { ListarChatsValidation } from './ListarChatsValidation';
+import { EditarTagsValidation } from './EditarTagsValidation';
 
 export {
   LoginValidation,
@@ -21,5 +30,14 @@ export {
   LerNotificacaoValidation,
   DesativarNotificacaoValidation,
   BuscarQuantidadeValidation,
-  BuscarMentoriaUsuarioValidation,
+  BuscarMentoriaValidation,
+  MostrarMentoriaValidation,
+  EnviarPropostaValidation,
+  ResponderPropostaValidation,
+  AvaliarMentoriaValidation,
+  BuscarMentoresValidation,
+  BuscarChatValidation,
+  EnviarMensagemValidation,
+  ListarChatsValidation,
+  EditarTagsValidation,
 };
