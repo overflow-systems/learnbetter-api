@@ -111,8 +111,6 @@ class UsuarioController {
       senha: request.body.senha,
     };
 
-    console.log(request.headers, "header");
-
     await conexao
       .select('id', 'senha', 'mentorado', 'mentor')
       .from<Usuario>('usuarios')
@@ -181,7 +179,13 @@ class UsuarioController {
       .update({ senha: CriptografarSenha(senha) })
       .into('usuarios')
       .where('email', request.body.email)
-      .then(resultado => {
+      .then((resultado: any) => {
+        if (resultado.length <= 0)
+          return response.json({
+            status: 400,
+            mensagem: 'Usuário não encontrado',
+          });
+
         return response.json({
           status: 200,
           mensagem: 'Senha nova gerada',
