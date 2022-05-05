@@ -57,7 +57,7 @@ class UsuarioController {
 
           conexao.insert(tagsUsuario).into('usuarios_tags');
         }
-        return response.json({ status: 200, messagem: idUsuario });
+        return response.json({ status: 200, mensagem: idUsuario });
       });
 
     return RetornoErroPadrao();
@@ -82,7 +82,7 @@ class UsuarioController {
       .into('usuarios')
       .where('id', id)
       .then(result => {
-        return response.json({ status: 200, messagem: result });
+        return response.json({ status: 200, mensagem: result });
       });
 
     return RetornoErroPadrao();
@@ -98,7 +98,7 @@ class UsuarioController {
       .then(() => {
         return response.json({
           status: 200,
-          messagem: 'Usuário deletado com sucesso',
+          mensagem: 'Usuário deletado com sucesso',
         });
       });
 
@@ -119,7 +119,7 @@ class UsuarioController {
         if (resultados.length <= 0)
           return response.json({
             status: 400,
-            messagem: 'Usuário não encontrado',
+            mensagem: 'Usuário não encontrado',
           });
 
         resultados.forEach(resultado => {
