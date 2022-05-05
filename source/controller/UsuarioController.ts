@@ -57,7 +57,7 @@ class UsuarioController {
 
           conexao.insert(tagsUsuario).into('usuarios_tags');
         }
-        return response.json({ status: 200, message: idUsuario });
+        return response.json({ status: 200, messagem: idUsuario });
       });
 
     return RetornoErroPadrao();
@@ -82,7 +82,7 @@ class UsuarioController {
       .into('usuarios')
       .where('id', id)
       .then(result => {
-        return response.json({ status: 200, message: result });
+        return response.json({ status: 200, messagem: result });
       });
 
     return RetornoErroPadrao();
@@ -98,7 +98,7 @@ class UsuarioController {
       .then(() => {
         return response.json({
           status: 200,
-          message: 'Usuário deletado com sucesso',
+          messagem: 'Usuário deletado com sucesso',
         });
       });
 
@@ -119,7 +119,7 @@ class UsuarioController {
         if (resultados.length <= 0)
           return response.json({
             status: 400,
-            message: 'Usuário não encontrado',
+            messagem: 'Usuário não encontrado',
           });
 
         resultados.forEach(resultado => {
@@ -166,6 +166,26 @@ class UsuarioController {
         return response.json({
           status: 200,
           mensagem: 'Tipo de conta alterado com sucesso',
+        });
+      });
+
+    return RetornoErroPadrao();
+  }
+
+  async esqueciMinhaSenha(request: Request, response: Response) {
+    const { id } = request.headers;
+
+    const senha = Math.random().toString(36).slice(-8);
+
+    await conexao
+      .update({ senha: CriptografarSenha(senha) })
+      .into('usuarios')
+      .where('id', id)
+      .then(resultado => {
+        return response.json({
+          status: 200,
+          mensagem: 'Senha nova gerada',
+          senha,
         });
       });
 

@@ -35,6 +35,7 @@ rotas.use(BodyParser.json());
 
 rotas.post('/usuario/login', LoginValidation, UsuarioController.login);
 rotas.post('/usuario/criar', CriarUsuarioValidation, UsuarioController.criarUsuario);
+rotas.get('/usuario/esqueci-minha-senha', UsuarioController.esqueciMinhaSenha);
 rotas.get('/tag/listar', TagController.listarTags);
 
 // rotas.use(AutenticacaoMiddleware);

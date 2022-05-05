@@ -46,7 +46,7 @@ class MentoriaController {
     const { idmentor }: any = request.query;
 
     if (tipo == 'mentor')
-      return response.json({ status: 401, message: 'Não autorizado' });
+      return response.json({ status: 401, messagem: 'Não autorizado' });
 
     await conexao
       .select('*')
@@ -70,7 +70,7 @@ class MentoriaController {
     const { id, tipo } = request.headers;
 
     if (tipo == 'mentor')
-      return response.json({ status: 401, message: 'Não autorizado' });
+      return response.json({ status: 401, messagem: 'Não autorizado' });
 
     const mentoria: Mentoria = {
       id_mentor: request.body.idmentor,
@@ -93,7 +93,7 @@ class MentoriaController {
     const { id, tipo } = request.headers;
 
     if (tipo == 'mentorado')
-      return response.json({ status: 401, message: 'Não autorizado' });
+      return response.json({ status: 401, messagem: 'Não autorizado' });
 
     await conexao
       .update({ status: request.body.status })
@@ -144,7 +144,7 @@ class MentoriaController {
     const { id, tipo } = request.headers;
 
     if (tipo == TipoUsuarioEnum.MENTOR)
-      return response.json({ status: 401, message: 'Não autorizado' });
+      return response.json({ status: 401, messagem: 'Não autorizado' });
 
     const colunas = `COUNT(DISTINCT tags.id) as score,
                      CONCAT(mentor.nome, ' ', mentor.sobrenome) as nome,
