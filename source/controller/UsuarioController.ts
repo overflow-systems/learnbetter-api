@@ -191,6 +191,23 @@ class UsuarioController {
 
     return RetornoErroPadrao();
   }
+
+  async alterarSenha(request: Request, response: Response) {
+    const { id } = request.headers;
+
+    await conexao
+      .update({ senha: CriptografarSenha(request.body.senha) })
+      .into('usuarios')
+      .where('id', id)
+      .then(resultado => {
+        return response.json({
+          status: 200,
+          mensagem: 'Senha alterada com sucesso',
+        });
+      });
+
+    return RetornoErroPadrao();
+  }
 }
 
 export default new UsuarioController();

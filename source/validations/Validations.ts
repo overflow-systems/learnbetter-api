@@ -18,6 +18,7 @@ import { BuscarChatValidation } from './BuscarChatValidation';
 import { EnviarMensagemValidation } from './EnviarMensagemValidation';
 import { ListarChatsValidation } from './ListarChatsValidation';
 import { EditarTagsValidation } from './EditarTagsValidation';
+import { AlterarSenhaValidation } from './AlterarSenhaValidation';
 
 export {
   LoginValidation,
@@ -40,4 +41,5 @@ export {
   EnviarMensagemValidation,
   ListarChatsValidation,
   EditarTagsValidation,
+  AlterarSenhaValidation,
 };

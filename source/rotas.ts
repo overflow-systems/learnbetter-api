@@ -27,7 +27,8 @@ import {
   BuscarChatValidation,
   EnviarMensagemValidation,
   ListarChatsValidation,
-  EditarTagsValidation
+  EditarTagsValidation,
+  AlterarSenhaValidation,
 } from './validations/Validations';
 
 const rotas = express();
@@ -44,6 +45,7 @@ rotas.get('/usuario/buscar', BuscarUsuariosValidation, UsuarioController.buscarU
 rotas.put('/usuario/editar', EditarUsuarioValidation, UsuarioController.editarUsuario);
 rotas.delete('/usuario/deletar', DeletarUsuarioValidation, UsuarioController.deletarUsuario);
 rotas.put('/usuario/alterar-tipo-conta', AlterarTipoContaValidation, UsuarioController.alterarTipoConta);
+rotas.put('/usuario/alterar-senha', AlterarSenhaValidation, UsuarioController.alterarSenha);
 
 rotas.get('/notificacao/buscar', BuscarNotificacoesValidation, NotificacaoController.buscarNotificacoes);
 rotas.put('/notificacao/ler', LerNotificacaoValidation, NotificacaoController.lerNotificacao);
