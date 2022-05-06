@@ -7,7 +7,7 @@ class ChatController {
   async buscarChat(request: Request, response: Response) {
     const { id, tipo } = request.headers;
 
-    await conexao('mensagens')
+    return await conexao('mensagens')
       .select(
         'mensagens.*',
         'mentor.nome as mentor_nome',
@@ -34,15 +34,16 @@ class ChatController {
       .orderBy('mensagens.data_envio', 'desc')
       .then(mensagens => {
         return response.json(mensagens);
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async enviarMensagem(request: Request, response: Response) {
     const { id, tipo } = request.headers;
 
-    await conexao('mensagens')
+    return await conexao('mensagens')
       .insert({
         id_mentor: tipo == TipoUsuarioEnum.MENTOR ? id : request.body.id_mentor,
         id_mentorado:
@@ -55,9 +56,10 @@ class ChatController {
           status: 200,
           mensagem: 'Mensagem enviada com sucesso!',
         });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async listarChats(request: Request, response: Response) {
@@ -79,11 +81,14 @@ class ChatController {
       group by mensagens.id_mentor`;
     }
 
-    await conexao.raw(query).then(mensagens => {
-      return response.json(mensagens[0]);
-    });
-
-    return RetornoErroPadrao();
+    return await conexao
+      .raw(query)
+      .then(mensagens => {
+        return response.json(mensagens[0]);
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
+      });
   }
 }
 

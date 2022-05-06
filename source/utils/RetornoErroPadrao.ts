@@ -1,3 +1,3 @@
 export default function RetornoErroPadrao() {
-  return { status: 400, mensagem: 'Erro inesperado' };
+  return { status: 500, mensagem: 'Erro interno, tente novamente!' };
 }

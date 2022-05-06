@@ -44,7 +44,7 @@ class UsuarioController {
       mentorado: request.body.tipo == 'mentorado' ? true : false,
     };
 
-    conexao
+    return conexao
       .insert(usuario)
       .into('usuarios')
       .then(idUsuario => {
@@ -58,9 +58,10 @@ class UsuarioController {
           conexao.insert(tagsUsuario).into('usuarios_tags');
         }
         return response.json({ status: 200, mensagem: idUsuario });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async editarUsuario(request: Request, response: Response) {
@@ -77,21 +78,22 @@ class UsuarioController {
       data_ultima_atualizacao: new Date(Date.now()),
     };
 
-    await conexao
+    return await conexao
       .update(usuario)
       .into('usuarios')
       .where('id', id)
       .then(result => {
         return response.json({ status: 200, mensagem: result });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async deletarUsuario(request: Request, response: Response) {
     const { id } = request.headers;
 
-    await conexao
+    return await conexao
       .delete()
       .from('usuarios')
       .where('id', id)
@@ -100,9 +102,10 @@ class UsuarioController {
           status: 200,
           mensagem: 'Usuário deletado com sucesso',
         });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async login(request: Request, response: Response) {
@@ -111,7 +114,7 @@ class UsuarioController {
       senha: request.body.senha,
     };
 
-    await conexao
+    return await conexao
       .select('id', 'senha', 'mentorado', 'mentor')
       .from<Usuario>('usuarios')
       .where('email', usuario.email)
@@ -150,15 +153,16 @@ class UsuarioController {
             status: 401,
             mensagem: 'Credenciais inválidas, tente novamente!',
           });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async alterarTipoConta(request: Request, response: Response) {
     const { id } = request.headers;
 
-    await conexao
+    return await conexao
       .update({ mentor: true, mentorado: true })
       .into('usuarios')
       .where('id', id)
@@ -167,15 +171,16 @@ class UsuarioController {
           status: 200,
           mensagem: 'Tipo de conta alterado com sucesso',
         });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async esqueciMinhaSenha(request: Request, response: Response) {
     const senha = Math.random().toString(36).slice(-8);
 
-    await conexao
+    return await conexao
       .select('id')
       .from<Usuario>('usuarios')
       .where('email', request.body.email)
@@ -186,7 +191,7 @@ class UsuarioController {
             mensagem: 'Usuário não encontrado',
           });
 
-        await conexao
+        return await conexao
           .update({ senha: CriptografarSenha(senha) })
           .into('usuarios')
           .where('email', request.body.email)
@@ -202,16 +207,20 @@ class UsuarioController {
               mensagem: 'Senha nova gerada',
               senha,
             });
+          })
+          .catch(() => {
+            return RetornoErroPadrao();
           });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async alterarSenha(request: Request, response: Response) {
     const { id } = request.headers;
 
-    await conexao
+    return await conexao
       .update({ senha: CriptografarSenha(request.body.senha) })
       .into('usuarios')
       .where('id', id)
@@ -220,9 +229,10 @@ class UsuarioController {
           status: 200,
           mensagem: 'Senha alterada com sucesso',
         });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async validarCredenciais(request: Request, response: Response) {

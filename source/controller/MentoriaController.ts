@@ -12,7 +12,7 @@ class MentoriaController {
     const { id, tipo } = request.headers;
     const { status }: any = request.query;
 
-    await conexao
+    return await conexao
       .count('id as quantidade')
       .from('mentorias')
       .where(`id_${tipo}`, id)
@@ -20,25 +20,27 @@ class MentoriaController {
       .first()
       .then(({ quantidade }) => {
         return response.json(quantidade);
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async buscarMentoriaUsuario(request: Request, response: Response) {
     const { id, tipo } = request.headers;
     const { status }: any = request.query;
 
-    await conexao
+    return await conexao
       .select('*')
       .from('mentorias')
       .where(`id_${tipo}`, id)
       .where('status', status)
       .then(mentorias => {
         return response.json(mentorias);
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async mostrarMentoria(request: Request, response: Response) {
@@ -48,7 +50,7 @@ class MentoriaController {
     if (tipo == 'mentor')
       return response.json({ status: 401, mensagem: 'Não autorizado' });
 
-    await conexao
+    return await conexao
       .select('*')
       .from<MentorInterface>('usuarios')
       .where('id', idmentor)
@@ -61,9 +63,10 @@ class MentoriaController {
           .first();
         mentor.avaliacao = resultado.avaliacao;
         return response.json(mentor);
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async enviarProposta(request: Request, response: Response) {
@@ -79,14 +82,15 @@ class MentoriaController {
       status: StatusMentoriaEnum.AGUARDANDO,
     };
 
-    await conexao
+    return await conexao
       .insert(mentoria)
       .into('mentorias')
       .then(resultado => {
         return response.json(resultado);
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async responderProposta(request: Request, response: Response) {
@@ -95,15 +99,16 @@ class MentoriaController {
     if (tipo == 'mentorado')
       return response.json({ status: 401, mensagem: 'Não autorizado' });
 
-    await conexao
+    return await conexao
       .update({ status: request.body.status })
       .from('mentorias')
       .where({ id: request.body.idmentoria, id_mentor: id })
       .then(resultado => {
         return response.json({ status: 200, mensagem: resultado });
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
       });
-
-    return RetornoErroPadrao();
   }
 
   async avaliarMentoria(request: Request, response: Response) {
@@ -111,7 +116,7 @@ class MentoriaController {
     const { idmentoria, avaliacao } = request.body;
 
     if (tipo == TipoUsuarioEnum.MENTOR) {
-      await conexao
+      return await conexao
         .update({ avaliacao_mentorado: avaliacao })
         .into('mentorias')
         .where({
@@ -121,10 +126,13 @@ class MentoriaController {
         })
         .then(resultado => {
           return response.json({ status: 200, mensagem: resultado });
+        })
+        .catch(() => {
+          return RetornoErroPadrao();
         });
     }
     if (tipo == TipoUsuarioEnum.MENTORADO) {
-      await conexao
+      return await conexao
         .update({ avaliacao_mentor: avaliacao })
         .into('mentorias')
         .where({
@@ -134,6 +142,9 @@ class MentoriaController {
         })
         .then(resultado => {
           return response.json({ status: 200, mensagem: resultado });
+        })
+        .catch(() => {
+          return RetornoErroPadrao();
         });
     }
 
@@ -166,11 +177,14 @@ class MentoriaController {
                    group by mentor.id
                      order by score desc, nota desc;`;
 
-    await conexao.raw(query).then(resultado => {
-      return response.json(resultado[0]);
-    });
-
-    return RetornoErroPadrao();
+    return await conexao
+      .raw(query)
+      .then(resultado => {
+        return response.json(resultado[0]);
+      })
+      .catch(() => {
+        return RetornoErroPadrao();
+      });
   }
 }
 

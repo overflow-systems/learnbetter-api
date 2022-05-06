@@ -28,7 +28,7 @@ class TagController {
         id_tag: tag,
       }));
 
-      await conexao
+      return await conexao
         .delete()
         .from('usuarios_tags')
         .where({ id_mentor: id })
@@ -41,7 +41,13 @@ class TagController {
                 status: 200,
                 mensagem: 'Tags atualizadas com sucesso',
               });
+            })
+            .catch(() => {
+              return RetornoErroPadrao();
             });
+        })
+        .catch(() => {
+          return RetornoErroPadrao();
         });
     }
 
@@ -64,9 +70,16 @@ class TagController {
                 status: 200,
                 mensagem: 'Tags atualizadas com sucesso',
               });
+            })
+            .catch(() => {
+              return RetornoErroPadrao();
             });
+        })
+        .catch(() => {
+          return RetornoErroPadrao();
         });
     }
+    return RetornoErroPadrao();
   }
 }
 
