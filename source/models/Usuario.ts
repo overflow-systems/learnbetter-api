@@ -4,6 +4,7 @@ export default interface Usuario {
   id?: number;
   nome: string;
   token?: string;
+  socket_id?: string;
   sobrenome: string;
   data_nascimento: string;
   email: string;

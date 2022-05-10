@@ -4,6 +4,7 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('usuarios', table => {
     table.increments('id').primary();
     table.string('token');
+    table.string('id_socket');
     table.string('nome').notNullable();
     table.string('sobrenome').notNullable();
     table.date('data_nascimento').notNullable();

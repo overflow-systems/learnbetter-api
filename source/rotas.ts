@@ -33,8 +33,10 @@ import {
   ValidarCredenciaisValidation,
 } from './validations/Validations';
 
-const rotas = express();
+
+const rotas = express.Router();
 rotas.use(BodyParser.json());
+
 
 rotas.post('/usuario/login', LoginValidation, UsuarioController.login);
 rotas.post('/usuario/criar', CriarUsuarioValidation, UsuarioController.criarUsuario);
