@@ -5,6 +5,9 @@ import rotas from './source/rotas';
 require('dotenv/config');
 const http = require('http');
 
+import Mensagem from './source/models/Mensagem';
+import { TipoUsuarioEnum } from './source/enum/TipoUsuarioEnum';
+
 const app = express();
 const server = http.createServer(app);
 
@@ -20,14 +23,23 @@ app.use(express.json());
 app.use(rotas);
 
 io.on('connection', socket => {
-  socket.on('enviarMensagem', async mensagem => {
+  socket.on('enviarMensagem', async data => {
     const { id_socket } = await conexao
       .select('id_socket')
       .from<Usuario>('usuarios')
-      .where('id', mensagem.id_para)
+      .where('id', data.id_para)
       .first();
 
-    socket.to(id_socket).emit('receberMensagem', mensagem.mensagem);
+    const mensagem: Mensagem = {
+      mensagem: data.mensagem,
+      tipo_enviado: data.tipo,
+      id_mentor: data.tipo == TipoUsuarioEnum.MENTOR ? data.id_de : data.id_para,
+      id_mentorado: data.tipo == TipoUsuarioEnum.MENTORADO ? data.id_de : data.id_para,
+    };
+
+    await conexao.insert(mensagem).into('mensagens');
+
+    socket.to(id_socket).emit('receberMensagem', data.mensagem);
   });
 });
 
