@@ -24,6 +24,11 @@ app.use(rotas);
 
 io.on('connection', socket => {
   socket.on('enviarMensagem', async data => {
+    await conexao
+      .update({ id_socket: socket.id })
+      .into('usuarios')
+      .where({ id: data.id_de });
+
     const { id_socket } = await conexao
       .select('id_socket')
       .from<Usuario>('usuarios')
