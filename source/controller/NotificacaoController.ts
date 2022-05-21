@@ -44,7 +44,7 @@ class NotificacaoController {
       });
   }
 
-  async desativarNotificacao(request: Request, response: Response) {
+  async removerNotificacao(request: Request, response: Response) {
     const { idnotificacao }: any = request.query;
 
     return await conexao

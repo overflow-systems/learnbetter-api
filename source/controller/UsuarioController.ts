@@ -9,6 +9,7 @@ import ValidarRequestCriarUsuario from '../utils/ValidarRequestCriarUsuario';
 import CompararSenha from '../utils/CompararSenha';
 import GerarToken from '../utils/GerarToken';
 import UsuarioTags from '../models/UsuarioTags';
+import { TipoUsuarioEnum } from '../enum/TipoUsuarioEnum';
 
 class UsuarioController {
   async buscarUsuarios(request: Request, response: Response) {
@@ -233,6 +234,69 @@ class UsuarioController {
       .catch(() => {
         return RetornoErroPadrao();
       });
+  }
+
+  async editarTags(request: Request, response: Response) {
+    const { id, tipo } = request.headers;
+
+    if (tipo == TipoUsuarioEnum.MENTOR) {
+      const tagsUsuario: UsuarioTags[] = request.body.tags.map(tag => ({
+        id_mentor: id,
+        id_tag: tag,
+      }));
+
+      return await conexao
+        .delete()
+        .from('usuarios_tags')
+        .where({ id_mentor: id })
+        .then(async () => {
+          await conexao
+            .insert(tagsUsuario)
+            .into('usuarios_tags')
+            .then(() => {
+              return response.json({
+                status: 200,
+                mensagem: 'Tags atualizadas com sucesso',
+              });
+            })
+            .catch(() => {
+              return RetornoErroPadrao();
+            });
+        })
+        .catch(() => {
+          return RetornoErroPadrao();
+        });
+    }
+
+    if (tipo == TipoUsuarioEnum.MENTORADO) {
+      const tagsUsuario: UsuarioTags[] = request.body.tags.map(tag => ({
+        id_mentorado: id,
+        id_tag: tag,
+      }));
+
+      await conexao
+        .delete()
+        .from('usuarios_tags')
+        .where({ id_mentorado: id })
+        .then(async () => {
+          await conexao
+            .insert(tagsUsuario)
+            .into('usuarios_tags')
+            .then(() => {
+              return response.json({
+                status: 200,
+                mensagem: 'Tags atualizadas com sucesso',
+              });
+            })
+            .catch(() => {
+              return RetornoErroPadrao();
+            });
+        })
+        .catch(() => {
+          return RetornoErroPadrao();
+        });
+    }
+    return RetornoErroPadrao();
   }
 
   async validarCredenciais(request: Request, response: Response) {
