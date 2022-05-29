@@ -66,27 +66,6 @@ export async function seed(knex: Knex): Promise<void> {
     },
   ]);
 
-  await knex('cursos').insert([
-    {
-      id: 1,
-      nome: 'Curso 1',
-      instituicao: 'Instituição 1',
-      data_inicio: '2022/01/12',
-      data_fim: '2022/01/20',
-      tipo_curso: 'Tecnólogo',
-      id_mentor: 2,
-    },
-    {
-      id: 2,
-      nome: 'Curso 2',
-      instituicao: 'Instituição 2',
-      data_inicio: '2022/02/12',
-      data_fim: '2022/02/20',
-      tipo_curso: 'Técnico',
-      id_mentor: 3,
-    },
-  ]);
-
   await knex('tags').insert([
     {
       id: 1,
