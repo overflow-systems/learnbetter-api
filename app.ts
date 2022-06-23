@@ -4,11 +4,14 @@ import Usuario from './source/models/Usuario';
 import rotas from './source/rotas';
 require('dotenv/config');
 const http = require('http');
+const cors = require('cors');
 
 import Mensagem from './source/models/Mensagem';
 import { TipoUsuarioEnum } from './source/enum/TipoUsuarioEnum';
 
 const app = express();
+
+app.use(cors());
 
 const server = http.createServer(app);
 
