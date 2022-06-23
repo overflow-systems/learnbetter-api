@@ -54,10 +54,11 @@ rotas.put('/usuario/editar', UsuarioController.editarUsuario);
 rotas.delete('/usuario/deletar', UsuarioController.deletarUsuario);
 rotas.put('/usuario/alterar-tipo-conta', AlterarTipoContaValidation, UsuarioController.alterarTipoConta);
 rotas.put('/usuario/alterar-senha', AlterarSenhaValidation, UsuarioController.alterarSenha);
+rotas.put('/usuario/tag/editar', EditarTagsValidation, UsuarioController.editarTags);
 
 rotas.get('/notificacao/buscar', BuscarNotificacoesValidation, NotificacaoController.buscarNotificacoes);
 rotas.put('/notificacao/ler', LerNotificacaoValidation, NotificacaoController.lerNotificacao);
-rotas.put('/notificacao/desativar', DesativarNotificacaoValidation, NotificacaoController.desativarNotificacao);
+rotas.put('/notificacao/desativar', DesativarNotificacaoValidation, NotificacaoController.removerNotificacao);
 
 rotas.get('/mentoria/quantidade', MentoriaController.buscarQuantidade);
 rotas.get('/mentoria/buscar/usuario', MentoriaController.buscarMentoriaUsuario); //usuario logado
@@ -70,8 +71,6 @@ rotas.get('/mentoria/mentores', MentoriaController.buscarMentores);
 rotas.get('/chat/buscar', BuscarChatValidation, ChatController.buscarChat);
 rotas.post('/chat/mensagem/enviar', EnviarMensagemValidation, ChatController.enviarMensagem);
 rotas.get('/chat/listar', ListarChatsValidation, ChatController.listarChats);
-
-rotas.put('/tag/editar', EditarTagsValidation, TagController.editarTags);
 
 rotas.use(errors());
 
