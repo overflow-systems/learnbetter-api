@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "engines": {
-    "node": "17.x",
-    "npm": "8.5.x"
-  },
   "dependencies": {
     "@vscode/sqlite3": "^5.0.8",
     "bcryptjs": "^2.4.3",
