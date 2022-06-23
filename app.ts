@@ -9,6 +9,7 @@ import Mensagem from './source/models/Mensagem';
 import { TipoUsuarioEnum } from './source/enum/TipoUsuarioEnum';
 
 const app = express();
+
 const server = http.createServer(app);
 
 const io = require('socket.io')(server, {
@@ -22,17 +23,19 @@ app.use(express.json());
 
 app.use(rotas);
 
-io.on('connection', socket => {
-  socket.on('enviarMensagem', async data => {
-    await conexao
-      .update({ id_socket: socket.id })
-      .into('usuarios')
-      .where({ id: data.id_de });
+io.on('connection', async socket => {
+  console.log(socket.id);
+  
+  // await conexao
+  //   .update({ id_socket: socket.id })
+  //   .into('usuarios')
+  //   .where({ id });
 
+  socket.on('enviarMensagem', async data => {
     const { id_socket } = await conexao
       .select('id_socket')
       .from<Usuario>('usuarios')
-      .where('id', data.id_para)
+      .where('id', 2)
       .first();
 
     const mensagem: Mensagem = {

@@ -33,6 +33,7 @@ class MentoriaController {
     return await conexao
       .select('*')
       .from('mentorias')
+      .leftJoin('usuarios', 'usuarios.id', 'mentorias.id_mentor')
       .where(`id_${tipo}`, id)
       .where('status', status)
       .then(mentorias => {
@@ -71,6 +72,7 @@ class MentoriaController {
 
   async enviarProposta(request: Request, response: Response) {
     const { id, tipo } = request.headers;
+    
 
     if (tipo == 'mentor')
       return response.json({ status: 401, mensagem: 'Não autorizado' });
@@ -157,9 +159,10 @@ class MentoriaController {
     if (tipo == TipoUsuarioEnum.MENTOR)
       return response.json({ status: 401, mensagem: 'Não autorizado' });
 
-    const colunas = `COUNT(DISTINCT tags.id) as score,
+    const colunas = `mentor.id,
+                     COUNT(DISTINCT tags.id) as score,
                      CONCAT(mentor.nome, ' ', mentor.sobrenome) as nome,
-                     GROUP_CONCAT(DISTINCT tags.nome) as tags,
+                     GROUP_CONCAT(DISTINCT tags.nome SEPARATOR ', ') as tags,
                      mentor.data_criacao,
                      ROUND(AVG(mentorias.avaliacao_mentor), 2) as nota,
                      mentor.apresentacao,
@@ -169,11 +172,11 @@ class MentoriaController {
     const query = `select ${colunas}
                      from usuarios as mentor
                      inner join usuarios_tags mentor_ut on mentor_ut.id_mentor = mentor.id
-                     inner join usuarios_tags mentorado_ut on mentorado_ut .id_mentorado = ${id}
+                     inner join usuarios_tags mentorado_ut on mentorado_ut.id_mentorado = ${id}
                      inner join tags on tags.id = mentor_ut.id_tag
                      left join mentorias on mentorias.id_mentor = mentor.id
                      left join mentor_mentorado amr on amr.id_mentor = mentor.id and amr.id_mentorado = ${id} and amr.status <> ${StatusMentorMentoradoEnum.RECUSADO}
-                     where mentor.mentor=true and mentorado_ut.id_tag = mentor_ut.id_tag
+                     where mentor.mentor=true and mentorado_ut.id_tag = mentor_ut.id_tag and mentor.id <> ${id}
                    group by mentor.id
                      order by score desc, nota desc;`;
 

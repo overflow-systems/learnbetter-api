@@ -19,6 +19,39 @@ class TagController {
     return RetornoErroPadrao();
   }
 
+  async criarTags(request: Request, response: Response) {
+    const tag: Tag = {
+      id: null,
+      nome: request.body.nome,
+    };
+
+    await conexao
+      .insert(tag)
+      .into('tags')
+      .then(tag => {
+        return response.json({ status: 200, mensagem: tag });
+      })
+
+    return RetornoErroPadrao();
+  }
+
+  async deletarTag(request: Request, response: Response) {
+    const { id } = request.headers;
+
+    await conexao
+      .delete()
+      .from<Tag>('tags')
+      .where('id', id)
+      .then(() => {
+        return response.json({
+          status: 200,
+          mensagem: 'Tag deletada com sucesso',
+        });
+      });
+
+    return RetornoErroPadrao();
+  }
+
   async editarTags(request: Request, response: Response) {
     const { id, tipo } = request.headers;
 

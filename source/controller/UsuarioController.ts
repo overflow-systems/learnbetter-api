@@ -22,6 +22,21 @@ class UsuarioController {
     return RetornoErroPadrao();
   }
 
+  async buscarUsuarioLogin(request: Request, response: Response) {
+    let id = request.headers.id;
+    
+    await conexao
+      .select('*')
+      .from<Usuario>('usuarios')
+      .where('id', id)
+      .first()
+      .then(usuarios => {
+        return response.json(usuarios);
+      });
+
+    return RetornoErroPadrao();
+  }
+
   async criarUsuario(request: Request, response: Response) {
     const erros: StatusMensagemInterface = await ValidarRequestCriarUsuario(
       request.body.celular,

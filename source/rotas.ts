@@ -39,16 +39,19 @@ rotas.use(BodyParser.json());
 
 
 rotas.post('/usuario/login', LoginValidation, UsuarioController.login);
-rotas.post('/usuario/criar', CriarUsuarioValidation, UsuarioController.criarUsuario);
+rotas.post('/usuario/criar', UsuarioController.criarUsuario);
 rotas.put('/usuario/esqueci-minha-senha', EsqueciMinhaSenhaValidation, UsuarioController.esqueciMinhaSenha);
 rotas.get('/tag/listar', TagController.listarTags);
+rotas.post('/tag/criar', TagController.criarTags);
+rotas.delete('/tag/deletar', TagController.deletarTag);
 rotas.get('/usuario/validar-credenciais', ValidarCredenciaisValidation, UsuarioController.validarCredenciais);
 
 // rotas.use(AutenticacaoMiddleware);
 
-rotas.get('/usuario/buscar', BuscarUsuariosValidation, UsuarioController.buscarUsuarios);
-rotas.put('/usuario/editar', EditarUsuarioValidation, UsuarioController.editarUsuario);
-rotas.delete('/usuario/deletar', DeletarUsuarioValidation, UsuarioController.deletarUsuario);
+rotas.get('/usuario/buscar', UsuarioController.buscarUsuarios);
+rotas.get('/usuario/buscarLogin', UsuarioController.buscarUsuarioLogin);
+rotas.put('/usuario/editar', UsuarioController.editarUsuario);
+rotas.delete('/usuario/deletar', UsuarioController.deletarUsuario);
 rotas.put('/usuario/alterar-tipo-conta', AlterarTipoContaValidation, UsuarioController.alterarTipoConta);
 rotas.put('/usuario/alterar-senha', AlterarSenhaValidation, UsuarioController.alterarSenha);
 
@@ -56,13 +59,13 @@ rotas.get('/notificacao/buscar', BuscarNotificacoesValidation, NotificacaoContro
 rotas.put('/notificacao/ler', LerNotificacaoValidation, NotificacaoController.lerNotificacao);
 rotas.put('/notificacao/desativar', DesativarNotificacaoValidation, NotificacaoController.desativarNotificacao);
 
-rotas.get('/mentoria/quantidade', BuscarQuantidadeValidation, MentoriaController.buscarQuantidade);
-rotas.get('/mentoria/buscar/usuario', BuscarMentoriaValidation, MentoriaController.buscarMentoriaUsuario); //usuario logado
-rotas.get('/mentoria/mostrar', MostrarMentoriaValidation, MentoriaController.mostrarMentoria);
-rotas.post('/mentoria/proposta/enviar', EnviarPropostaValidation, MentoriaController.enviarProposta);
+rotas.get('/mentoria/quantidade', MentoriaController.buscarQuantidade);
+rotas.get('/mentoria/buscar/usuario', MentoriaController.buscarMentoriaUsuario); //usuario logado
+rotas.get('/mentoria/mostrar', MentoriaController.mostrarMentoria);
+rotas.post('/mentoria/proposta/enviar', MentoriaController.enviarProposta);
 rotas.put('/mentoria/proposta/responder', ResponderPropostaValidation, MentoriaController.responderProposta);
 rotas.put('/mentoria/avaliar', AvaliarMentoriaValidation, MentoriaController.avaliarMentoria);
-rotas.get('/mentoria/mentores', BuscarMentoresValidation, MentoriaController.buscarMentores);
+rotas.get('/mentoria/mentores', MentoriaController.buscarMentores);
 
 rotas.get('/chat/buscar', BuscarChatValidation, ChatController.buscarChat);
 rotas.post('/chat/mensagem/enviar', EnviarMensagemValidation, ChatController.enviarMensagem);
